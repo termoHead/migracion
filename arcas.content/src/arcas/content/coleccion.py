@@ -342,3 +342,21 @@ class ColeccionView(BrowserView):
             return self.galeria_template()
         elif tsec== "video":
             return self.video_template()
+        
+        
+class EditForm(edit.DefaultEditForm):    
+    
+    def update(self):
+        super(EditForm, self).update()        
+        
+        widgImagen1=self.groups[5].widgets["IColDerSeccion.picture1"]
+        widgImagen2=self.groups[6].widgets["IColDerSeccion.picture2"]
+        
+        if len(self.groups[5].widgets["IColDerSeccion.tipoSecc1"].value)>0:
+            if self.groups[5].widgets["IColDerSeccion.tipoSecc1"].value[0]!="imagen":
+                widgImagen1.mode=HIDDEN_MODE
+                widgImagen1.update()
+        if len(self.groups[6].widgets["IColDerSeccion.tipoSecc2"].value)>0:
+            if self.groups[6].widgets["IColDerSeccion.tipoSecc2"].value[0]!="imagen":
+                widgImagen2.mode=HIDDEN_MODE
+                widgImagen2.update()

@@ -52,6 +52,11 @@
 
 
   
+  
+  
+  
+  
+  
     <browser:page
       name="view"
       for="arcas.content.rootFolder.IRootFolder"
@@ -67,9 +72,6 @@
         template="templates/colecFolder.pt"
         permission="zope2.View"
      />
-      
-
-
     <browser:page
       name="view"
       for="arcas.content.exhibicionesFolder.IExhibicionesFolder"
@@ -85,7 +87,48 @@
       permission="zope2.View"
        
       />
-     
+    
+    <browser:page
+        for=".coleccion.IColeccion"
+        name="edit"
+        class=".coleccion.EditForm"
+        permission="cmf.ModifyPortalContent"
+/>
+   <utility
+            component=".vocabularios.GroupMembersVocabFactory"
+            name="arcas.CoorMembersVocab"
+            />
+    <utility
+            component=".vocabularios.InvestigadoresVocabFactory"
+            name="arcas.InvestMembersVocab"
+            />
+    <utility
+            component=".vocabularios.CuradoresVocabFactory"
+            name="arcas.ExhibicionMembersVocab"
+            />
+    <utility
+            component=".utils.ExhibicionesVocabFactory"
+            name="arcas.ExhibicionesVocab"
+            />
+    <utility
+            component=".utils.CatColeccionesVocabFactory"
+            name="arcas.Categorias"
+/> 
+    
+     <browser:viewletManager
+        name="arcas.coleccion.seccion1"
+        provides=".colDerViewlets.ISeccionUno"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+    />
+    
+    <browser:viewletManager
+        name="arcas.coleccion.seccion2"
+        provides=".colDerViewlets.ISeccionDos"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+/>
+    
      <!--browser:page
       name="view"
       for="arcas.content.biografia.IBiografia"
@@ -175,12 +218,7 @@
       class="arcas.content.enlacegs.AddForm"
       permission="zope2.View"
       />      
-    <browser:page
-      name="EditForm"
-      for="arcas.content.enlacegs.IEnlacegs"
-      class="arcas.content.enlacegs.EditForm"
-      permission="zope2.View"
-      />   
+ 
      <browser:page
         for="*"
         name="formsOk_view"
