@@ -129,6 +129,32 @@
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
 />
     
+    
+    
+    
+    
+    
+     <subscriber
+            for="arcas.content.coleccion.IColeccion
+                 Products.CMFCore.interfaces.IActionSucceededEvent"
+            handler=".eventos.onSetupColeccion"
+            />
+    <subscriber
+            for="arcas.content.coleccion.IColeccion
+                 zope.lifecycleevent.interfaces.IObjectAddedEvent"
+            handler=".eventos.onSaveColeccion"
+            />
+    <subscriber
+            for="arcas.content.coleccion.IColeccion
+                 zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+            handler=".eventos.onModificaColeccion"
+            />
+    <subscriber
+            for="arcas.content.coleccion.IColeccion
+                zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+            handler=".eventos.onDelColeccion"
+/>
+    
      <!--browser:page
       name="view"
       for="arcas.content.biografia.IBiografia"

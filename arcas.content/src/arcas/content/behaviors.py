@@ -150,4 +150,4 @@ class ColecGroupName(object):
     def groupName(self, value):
         if value is None:
             value = ()
-        self.contevaluext.aq_base.setGroupName()
+        self.context.groupName=value
