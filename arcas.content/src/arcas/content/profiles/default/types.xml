@@ -5,6 +5,8 @@
     <object name="arcas.coleccionesFolder"  meta_type="Dexterity FTI" />    
     <object name="arcas.biografia"          meta_type="Dexterity FTI" />    
     <object name="arcas.content.categoria"  meta_type="Dexterity FTI" /> 
+    <object name="arcas.coleccion"          meta_type="Dexterity FTI" />
+
     <!--object name="arcas.enlacegs"           meta_type="Dexterity FTI" />   
     <object name="arcas.coleccion"          meta_type="Dexterity FTI" />
     <object name="arcas.sugerencia"         meta_type="Dexterity FTI" />
