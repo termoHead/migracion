@@ -1,0 +1,21 @@
+<html metal:use-macro="views/standard_macros/view">
+<meta charset="utf-8">
+<body>
+<div metal:fill-slot="body">
+
+<div id="container">
+    <div class="texto">
+        <h3 class="label" tal:content="view/dameTitulo">El formulario se procesó correctamente.</h3>
+        <div tal:content="view/dameDescri">
+        Se ha enviado un email a su cuenta y al coordinador de ARCAS.
+        Para seguir editando otro documento, cierre esta pestaña y vuelva a las fuentes de la colección
+        </div>
+        <div class="msj">Para volver, <a href="#" onclick="javascript:window.close()"> cierre esta pestaña</a></div>
+    </div>
+ 
+
+     <div class="clr"></div>
+     </div>
+</div>
+</body>
+</html>

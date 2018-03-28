@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+<body>
+<metal:content-core fill-slot="main">
+    <metal:content-core define-macro="main">
+	<div class="markListColeccion" tal:define="cuerpo view/dameCuerpo|nothing">
+            <div class="cabezalInterno">
+                <h2>Colecciones</h2>
+                <div class="clr"> </div>
+            </div>
+        
+            <div class="conColumnas">
+                <div class="texto">
+                    <p tal:condition="cuerpo" tal:content="structure cuerpo">texto</p>
+                </div>
+            </div>
+            
+            <div class="cuerpoListado">
+                <div class="categoria" tal:repeat="categoria view/dameCategorias|nothing"
+                tal:attributes="class string:categoria color${categoria/color}">	
+                    <h2 tal:content="categoria/categoria">Categoria</h2>
+                    <div class="descriCate" tal:content="categoria/descri">Descri categoria</div>
+                        <div class="lista" tal:define="listado categoria/listado|nothing">
+                            <tal:r tal:condition="listado"
+                                    tal:repeat="colec listado">
+                                <div class="bloque">
+                                    <div class="tituloColeccion" tal:attributes="style string:background:url(${colec/url}/@@images/imagenLista) no-repeat">
+                                        <h2>
+                                        <a href="" tal:attributes="href colec/url;
+                                                                title colec/titulo"
+                                        tal:content="colec/titulo">Titulo coleccion</a>
+                                        </h2>
+                                    </div>
+                                    <div class="containerRight">
+                                        <div class="acercaColeccion">
+                                            <h3>Acerca de esta colecci&oacute;n</h3>
+                                            <p tal:content="colec/descri"></p>
+                                        </div>
+                                        <div class="coordinador">
+                                            <tal:rC tal:repeat="coor colec/coors">
+                                                <img class="coordinador" src="images/horacioPrekel.jpg" tal:replace="structure coor/img" />
+                                                <div class="datos">
+                                                    <span>Coordinador/a de la Colecci&oacute;n</span>
+
+                                                    <h4><a href="#" tal:attributes="href string:mailto:${coor/email}; 
+                                                                                        title coor/title"
+                                                            tal:content="coor/title">Nombre coordinador</a> <span>
+                                                    </h4>
+                                                    
+                                                </div>
+                                            </tal:rC>
+                                            <div class="clr"></div>
+                                        </div>
+                                        <div class="busquedaColeccion ">
+                                            <a href="navFuentes.php"  class="linkFuentes" tal:attributes="href colec/urlFuente; title colec/altFuente">
+                                            <img src="/++theme++arcas.theme/images/irA.gif" alt=""/>Navegar Fuentes</a>
+                                        
+
+
+                                            <form method="get" target="_blank" tal:attributes="action string:http://arcas.fahce.unlp.edu.ar:8383/greenstone3/library/collection/${colec/idColec}/search/TextQuery">
+                                            <span tal:replace="structure context/@@authenticator/authenticator" />
+                                            <input name="s1.query" class="buscaTexto" id="s1.query"  value="Buscar en la colección" type="text"/>
+                                            <input name="idColec" id="idColec"  type="hidden" tal:attributes="value colec/idColec" />
+
+                                            <input type="hidden" class="context" name="qs" value="1"/>
+                                            <input type="hidden" class="s1.level" name="s1.level" value="Doc"/>
+                                            <input type="hidden" class="s1.level" name="rt" value="rd"/>
+                                            <input type="hidden" class="s1.level" name="startPage" value="1"/>
+                                            <input type="hidden" class="s1.level" name="s1.index" value="ZZ"/>
+
+                                            <input type="hidden" class="context"
+                                                    name="form.button.Search"
+                                            value="Search"/>
+                                            </form>
+                                            <div class="clr"></div>
+                                        </div>
+                                        <div class="clr"></div>
+                                    </div>
+                                </div>
+                            </tal:r>
+                        </div>
+                    </div>
+                </div>
+    
+        </div>
+
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

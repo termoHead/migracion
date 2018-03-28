@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+<body>
+<metal:content-core fill-slot="main">
+    <metal:content-core define-macro="main">
+	<div class="markListExhibicion"
+            tal:define="textoF context/cuerpo|nothing">
+            <div class="cabezalInterno">
+                <h2>Exhibiciones virtuales!!!!!!!!!!</h2>
+                <div class="clr"></div>
+            </div>
+            <div class="conColumnas">
+                    <div class="texto" tal:condition="textoF">
+                            <p  tal:content="structure textoF/output">texto</p>
+                    </div>
+            </div>
+            <div class="lista"  tal:define="listado view/dameListaExhi|nothing">
+            <tal:r tal:repeat="colec listado">
+
+            <div class="bloque "
+                    tal:attributes="style string:background:url(${colec/url}/images/bgCabezalLista) no-repeat; class string:bloque ${colec/id}">
+                <div class="tituloExhibicion">
+                    <a class="size1" href="#" tal:attributes="href colec/url; title colec/titulo">
+                        <span class="subtitulo" tal:content="colec/subTitulo"></span>
+                        <span class="titulo" tal:content="colec/titulo"></span>
+                    </a>
+                </div>
+                <div class="containerRight" tal:define="curadores colec/curador | nothing; coordinadores colec/coors|nothing">
+                    <p class="descri" tal:content="colec/descri">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    <tal:cu tal:repeat="curador curadores" tal:condition="curadores">
+                        <div class="datosExtra">
+                            <span class="portrait"><img src=""  tal:replace="structure curador/portrait"/></span>
+                            <div class="responsales">
+                                <span class="label">Curador/a</span>
+                                <span class="special">
+                                <a href="#" tal:attributes="href string:mailto:${curador/mail};
+                                                            title curador/nombre"
+                                       tal:content="curador/nombre">Nombre coordinador</a>
+                                </span>
+                                <div class="seccionCoor" tal:condition="coordinadores">
+                                    <span>Coordinador/a<tal:o tal:condition="python:len(coordinadores)>1">es</tal:o></span>
+
+                                    <ul>
+                                    <tal:rC tal:repeat="coor coordinadores">
+                                        <li > <a href="#" tal:attributes="href string:mailto:${coor/email}; title coor/title"
+                                           tal:content="coor/title">Nombre coordinador</a></li>
+                                    </tal:rC>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="clr"></div>
+                        </div>
+                    </tal:cu>
+
+                    <tal:coor tal:condition="not:curadores">
+                        <div class="datosExtra">
+                            <div class="responsales">
+                                <div class="seccionCoor" tal:condition="coordinadores">
+                                    <span>Coordinador<tal:o tal:condition="python:len(coordinadores)>1">es</tal:o></span>
+                                    <ul>
+                                    <tal:rC tal:repeat="coor coordinadores">
+                                        <li > <a href="#" tal:attributes="href string:mailto:${coor/email}; title coor/title"
+                                           tal:content="coor/title">Nombre coordinador</a></li>
+                                    </tal:rC>
+                                    </ul>
+                                </div>
+                            </div>
+                         </div>
+                    </tal:coor>
+                    <div class="clr"></div>
+                </div>
+                <div class="clr"></div>
+            </div>
+            </tal:r>
+            </div>
+	</div>
+	</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

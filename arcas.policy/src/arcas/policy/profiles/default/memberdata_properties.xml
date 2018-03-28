@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<object name="portal_memberdata" meta_type="Plone Memberdata Tool">
+    <property name="enlaceCV" type="string"></property>
+    <property name="tipoUsuario" type="string"></property>
+    <property name="participaEn" type="string"></property>
+    <property name="colecAsignadas" type="string"></property>
+    <property name="colecCoordina" type="string"></property>
+</object>

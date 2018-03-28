@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+<body>
+
+
+
+<metal:content-core fill-slot="main">
+    <metal:content-core define-macro="main">
+    <div class="contenido" id="bioTemplate">
+    <div id="seccion">
+       <h1 id="parent-fieldname-title" class="documentFirstHeading">Biografía </h1>
+    </div>
+    <div id="contenedoText">
+        <div class="textoBox"
+             tal:define="descri context/descri|nothing;
+                        cv      context/cuerpo|nothing;
+                        obras   context/produccion|nothing">
+
+            <h2 tal:content="context/title"></h2>
+            <div class="columnas" >
+                <div class="columnaL">
+                    <div class="descri" tal:content="descri" tal:condition="descri"></div>
+                    <div class="cv" tal:content="structure cv/output" tal:condition="cv"></div>
+                    <div class="clr"> </div>
+                </div>
+                <div class="columnaR">
+                    <span class="label">Obras</span>
+                    <div class="bras" tal:content="structure obras/output" tal:condition="obras"></div>
+                    <div class="clr"> </div>
+                </div>
+            <div class="clr"> </div>
+        </div>
+            <div class="clr"> </div>
+        </div>
+    </div>
+    </div>
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

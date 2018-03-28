@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="arcas.content">
+<body>
+<metal:content-core fill-slot="main">
+    <metal:content-core define-macro="main">
+	 <!--script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script-->
+	 
+        <div class="boxTop rootFolder" tal:define="artDestacado view/getExhiDestacado | nothing">
+            
+            <div class="exhiV" tal:condition="artDestacado">
+            <div  id="exhibicionHome" class="exhibicio_componenet"
+                      tal:attributes="style string:background:url(${artDestacado/exhiurl}/@@images/bgCabezalHome) no-repeat">
+                <div class="volanta">
+                    <a href="#" tal:attributes="href artDestacado/exhiurl">exhibición virtual</a>
+                </div>
+                <div class="bloqueExhi">
+                    <div class="tituloExhibicion">
+                        <h2>
+                            <a href="#" tal:attributes="href artDestacado/exhiurl;"
+                                    tal:content="artDestacado/tituloColec">Jumbol</a>
+                        </h2>
+                        <h3 tal:content="artDestacado/titulo">Apoyo a la Educación</h3>
+                    </div>
+                    <div class="datosExcibicion">
+                        <p class="descri" tal:content="artDestacado/descri" />
+                        <div class="responsables" tal:define="curas artDestacado/curador|nothing">
+                                <p class="curador" tal:condition="curas">
+                                    <span tal:condition="python:len(curas)==1">Curador:</span>
+                                    <span tal:condition="python:len(curas)>1">Curadores:</span>
+                                    <tal:rr tal:repeat="cura curas">
+                                        <span tal:content="cura/nombre"></span>
+                                    </tal:rr>
+                                </p>
+                                <div class="colaboradores">
+                                    <span>Coordinador de la colección: </span>
+                                    <tal:ri tal:repeat="intX artDestacado/integrantes">
+                                        <span tal:content="intX/nombre ">Martín Marengo</span>
+                                        <span tal:replace="string:," tal:condition="not: repeat/intX/end"></span>
+                                    </tal:ri>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="masExhibiciones">
+                        <a  href="#" tal:attributes="href view/listExhiUrl;title string:exhibiciones virtuales">(+) exhibiciones virtuales</a>
+                </div>
+                <div class="clr>"></div>
+            </div>
+
+        </div>
+        
+                <tal:def tal:define="colecciones view/getCategoriasColec | nothing" tal:condition="colecciones">
+                <div class="boxColec" >
+                    <div id="coleccionesHome">
+                        <h3><a href="#" tal:attributes="href string:${view/listColeccUrl}" title="Listado completo de colecciones">COLECCIONES EN ARCAS</a></h3>
+                        <div id="boxColecciones">
+                            <div id="carrusel">
+                                <div id="mask">
+                                    <tal:rte tal:condition="colecciones"
+                                            tal:repeat="artDestacado colecciones">
+                                            <tal:odd tal:define="oddrow repeat/artDestacado/start">                                
+                                                <div class="bloqueColeccion "                                         
+                                                    tal:define="imgCategoria artDestacado/url"
+
+                                                    tal:attributes="style string:background:url('/arcas/++resource++arcas.content/topFichaHome.png') no-repeat #${artDestacado/color};
+                                                    class  string:bloqueColeccion color${artDestacado/color}">
+                                                    <a href="#" class="mascaraImg"
+                                                        tal:content="artDestacado/titulo"
+                                                        tal:attributes="href artDestacado/url">
+                                                        Titulo Categoria
+                                                    </a>
+                                                    <div class="textoInterno">                        
+                                                        <div class="parrafo" >
+                                                            <tal:rr tal:repeat="cco artDestacado/colecciones">
+                                                            <tal:def tal:define="coleccionURL cco/url">
+                                                                <div class="col1Linea"
+                                                                tal:attributes="style string:background:url('${coleccionURL}/@@images/imagenHome');
+                                                                                class string:col1Linea pos${repeat/cco/number}">
+                                                                    <div class="tituColect">
+                                                                    <a tal:attributes="href coleccionURL" href="#" alt="" tal:content="cco/titulo">titulo de la coleccion</a>
+                                                                    </div>
+                                                                    <div class="descrip"
+                                                                        
+                                                                        tal:content="python:cco['descri'][:87]">laskjd alskdj alskjd lkasjd laksjd lkaj dlkajs lskdj 
+                                                                    </div>
+                                                                    <div class="links"> 
+                                                                        <a tal:attributes="href cco/extraFolderFuenteUrl" href="#" class="enlaceComp" alt="">Fuentes</a> | <a tal:attributes="href cco/extraFolderUrl" href="#" class="enlaceComp" alt="">Estudios</a>
+                                                                    </div>        
+                                                                </div>
+                                                            </tal:def>
+                                                            </tal:rr>
+                                                        </div>                                                
+                                                        <div class="clr"></div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="separador" tal:condition="not:repeat/artDestacado/end"> </div>
+                                            </tal:odd>
+                                    </tal:rte>
+
+                                    <tal:rte tal:condition="not:colecciones">
+                                        <div class="colecc_componente">No se encontraron colecciones</div>
+                                    </tal:rte>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="buscaEnTodo">
+                            <form action="/greenstone3/library">
+                                <input name="a" value="q" type="hidden">
+                                <input name="sa" value="" type="hidden">
+                                <input name="rt" value="rd" type="hidden">
+                                <input type="hidden" value="TextQuery" name="s">
+                                <input name="s1.maxDocs" value="20" type="hidden">
+                                <input name="s1.hitsPerPage" value="20" type="hidden">            
+                                <input name="s1.collection" value="all" type="hidden">     
+                                
+                                <input name="s1.query" type="text" value="Buscar en las colecciones"  />
+                                <img class="lupa" src="++theme++arcas.theme/img/lupa-negra.jpg"/>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="controlC" tal:condition="python:len(colecciones)>2">
+                    <a href="#" class="carrI"><img src="++resource++arcas.content/flechaSlideIzq.png" alt="Mover imágenes a la izquierda"></a>  
+                    <a href="#" class="carrD"><img src="++resource++arcas.content/flechaSlideDer.png" alt="Mover imágenes a la derecha"></a>
+                </div>
+        </tal:def>    
+
+        
+        </div>
+        
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

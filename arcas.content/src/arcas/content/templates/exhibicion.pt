@@ -1,0 +1,308 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="arcas.content">
+    <body>
+    
+
+
+    <metal:content-core fill-slot="main">
+        <metal:content-core define-macro="main">
+            
+                        <div class="markExhibicion" tal:define="curadorObj view/dameCurador|nothing;
+                                colabs view/dameColaboradores|nothing;								
+                                                                coord view/dameCoordinador|nothing;
+                                listaFotos  view/listadoDeImagenesGS3|nothing;
+                                                                datosFull view/dameDatosImgFull | nothing;
+                                recursos view/dameEnlaces|nothing;
+                                idExhi view/dameIdExhi;
+                                puedeEditar view/puedeEditar"
+                                >
+                        
+            
+            <div class="boxHeader" tal:define="ruta string:${context/absolute_url}/@@images/bgCabezalVista"
+                tal:attributes="style string:background-image:url(${ruta})">
+                <div class="boxTitulo">
+                    <h2 tal:content="view/dameNombreColeccion">Manuel PUIG</h2>
+<input type="hidden" tal:attributes="value puedeEditar" id="popEditar"/>
+                    <h3 class="tituloE" tal:content="context/title">y las cartas desde nueva york</h3>
+                </div>
+            
+                
+                <div class="boxResponsables">
+                
+                
+                                                <div class="responsables" tal:condition="curadorObj">
+                                                                <span class="labelTitulo">Curador/a</span>
+                                                                <ul>						
+                                                                <li tal:repeat="cura curadorObj">
+                                                                        <span class="special" tal:content="python:cura['nombre']">
+                                                                                Ernesto Trambonati
+                                                                        </span>
+                                                                        <span tal:condition="not:repeat/cura/end">,</span>
+                                                                </li>
+                                                                </ul>
+                                                                
+                                                </div>
+                        <div>
+                            <div class="responsables">
+                                <span  class="labelTitulo"></span>
+                                
+                            </div>
+                        </div>
+                                                <tal:coor tal:condition="python:len(colabs)>0">
+                                                        <div class="responsables">
+                                                        <span  class="labelTitulo">
+                                <tal:span tal:condition="python:len(colabs)>1">Colaboradores en</tal:span>
+                                <tal:span tal:condition="python:len(colabs)<2">Colaborador de</tal:span>
+                                ésta exhibición
+                                                        </span>
+                            <ul>
+                                                        <li tal:repeat="colabora colabs">
+                                                                <span  tal:content="python:colabora['nombre']">Ernesto Trambonati</span>
+                                                                <span tal:condition="not: repeat/colabora/end">,</span>
+                                                        </li>
+                                                        </ul>
+                            </div>
+                                                        
+                                                </tal:coor>
+                                </div>
+                <div class="clr"></div>
+            </div>
+
+            <div class="boxDescri">
+                <div class="galDescri" tal:content="structure view/dameSaftyDescri"></div>
+                <div class="pie"><a href="infoExhi_view">(+) Leer toda la exhibici&oacute;n</a></div>
+            </div>
+
+            <div class="boxSlide" >
+                <div class="documentos" tal:condition="listaFotos">
+                    <div class="thumbnails">
+                        <a  href="#" 
+                            class="flechaNavegacion anterior"
+                            tal:condition="python:len(listaFotos)>5">
+                            <img src="++theme++arcas.theme/images/anteriorThumbnails.gif">
+                        </a>
+                        <ul>
+                            <tal:rep tal:repeat="link listaFotos">
+                                <li tal:define="numVuelta repeat/link/index;
+                                            esPrimera repeat/link/start;
+                                            esExterna python:link.getObject().tipoEnlace;
+                                            textCuerpo python:link.getObject().cuerpo;
+                                            tipoM python:link.getObject().tipoMedio;
+                                            rutaEdit python:link.getURL()"
+                                    tal:attributes="class string:slide_${numVuelta}">
+                                    <div class="marcoBorde">
+                                        <a href="#" tal:define="classPos python:esPrimera and 'activo' or '';
+                                                                classTipo python:esExterna == 0 and 'greenston' or 'externa';
+                                                                finClass python:'%s %s' %(classPos,classTipo)"
+                                                    tal:attributes="href link/getURL;
+                                                                    class python: finClass;">
+                                            <img src="#" width="52" 
+                                                tal:attributes="src link/urlRemoto;
+                                                                title link/Description"
+                                                                tal:condition="python:tipoM!='audio'"/>
+                                                                
+                                            <img class="scan" src="++theme++arcas.theme/img/soundIcon.gif"                             
+                                                tal:condition="python:tipoM=='audio'"/>
+                                        </a>
+                                    </div>
+                                    <span class="titulo oculto" tal:content="link/Title" ></span>
+                                    <span class="rutaEdit oculto" tal:content="rutaEdit" ></span>
+                                    <span class="cuerpo oculto" tal:condition="textCuerpo" tal:content="structure textCuerpo/output"></span>
+                                </li>
+                            </tal:rep>
+                        </ul>
+                        <a href="#"
+                            class="flechaNavegacion siguiente"
+                            tal:condition="python:len(listaFotos)>5">
+                            <img src="++theme++arcas.theme/images/suguienteThumbnails.gif">
+                        </a>
+                        <div id="addPagina" >
+                            <span><a href="++add++arcas.enlacegs">+ Agregar</a></span>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                
+
+                    <div class="pagina" tal:condition="datosFull" tal:define="tipoM python:listaFotos[0].getObject().tipoMedio">
+                        <img class="scan" src="++theme++arcas.theme/images/paginaEj.jpg"
+                            tal:attributes="src python:listaFotos[0].urlRemoto;
+                                            title python:listaFotos[0].Description"
+                            tal:condition="python:tipoM=='imagen'"/>
+                        <div id="popupPlayer" class="ui-widget-header" tal:condition="python:tipoM=='audio'">                                
+                                <iframe src="" id="altoPlayer" width="344" height="60" border="no" scrolling="no"
+                                        tal:attributes="src string:/greenstone3/interfaces/puig/style/repro.html?ruta=${datosFull/urlImg}"></iframe>
+                        </div>                      
+                        <tal:cond tal:condition="datosFull/ficha">
+                            <a href="#" target="_blank" tal:attributes="href datosFull/ficha">Ir a la ficha de la Fuente</a>
+                        </tal:cond>
+                        <a href="#" class="fullSize" target="_blank" tal:attributes="href datosFull/urlImg"><img src="++theme++arcas.theme/images/maximizar.gif"></a>
+                        <div class="clr"></div>
+                    </div>
+                    <div class="clr"></div>
+
+                </div>
+            
+            
+            <div id="addPagina" tal:condition="python:puedeEditar and not listaFotos">
+                <div class="exhiVacio">
+                    <span>La exhibición se encuentra vacía</span>
+                    <span><a href="++add++arcas.enlacegs">+ Agregar nuevo elemento</a></span>
+                </div>
+            </div>
+            
+            <div class="microTool" tal:condition="python:puedeEditar and len(listaFotos)>0">
+                    <span class="bot_edit boton_of" >
+                        <a href="#" class="boton" title="Editar" rel="nCat0" 
+                            tal:define="rr python:listaFotos[0].getURL()"
+                            tal:attributes="href string:${rr}/edit" >
+                            <span class="holdimage">
+                                <img src="++theme++arcas.theme/img/empty.gif">
+                            </span>
+                        </a>
+                    </span>
+                
+                    <span class="bot_trash boton_of">
+                        <a href="#" class="boton" rel="edita" title="Borrar">
+                            <span class="holdimage"><img src="++theme++arcas.theme/img/empty.gif"></span>
+                            <form id="delform">
+                                <input type="hidden" name="folderId" tal:attributes="value context/id"/>
+                                <input type="hidden" name="idsCat" tal:attributes="value python:listaFotos[0].id"/>
+                            </form>
+                        </a>
+                    </span>
+                    <div class="clear">&nbsp;</div>
+                </div>
+                <div class="texto">
+                    <tal:block tal:condition="datosFull">
+                        <tal:d tal:define="textoF python:listaFotos[0].cuerpo or None">
+                            <h3 class="tituloSlide" >
+                            <span  tal:replace="python:listaFotos[0].Title"></span></h3>
+                            <p class="textoSlide" tal:condition="textoF" tal:content="structure textoF/output">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed vulputate dolor, et ornare mauris. Donec tincidunt magna eget mauris volutpat bibendum. Maecenas ac est vel eros dapibus pulvinar. Fusce nec tristique elit. Morbi ornare scelerisque interdum. Sed tempor tellus ornare tincidunt luctus. Sed at volutpat orci, ac cursus velit. Integer blandit tincidunt sodales. Nunc augue nisl, volutpat eu erat tempus, ullamcorper ultrices neque. Vestibulum tempor justo sit amet dolor pretium mollis. Cras dignissim eleifend erat quis aliquet. Ut velit nisl, blandit id ullamcorper eget, sodales a ipsum. Nam dignissim nisl eget enim laoreet, at volutpat nibh aliquet. Pellentesque pellentesque ornare lacus, congue pellentesque nisi porta pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed vulputate dolor, et ornare mauris. Donec tincidunt magna eget mauris volutpat bibendum. Maecenas ac est vel eros dapibus pulvinar. Fusce nec tristique elit. Morbi ornare scelerisque interdum. Sed tempor tellus ornare tincidunt luctus. Sed at volutpat orci, ac cursus velit. Integer blandit tincidunt sodales. Nunc augue nisl, volutpat eu erat tempus, ullamcorper ultrices neque. Vestibulum tempor justo sit amet dolor pretium mollis. Cras dignissim eleifend erat quis aliquet. Ut velit nisl, blandit id ullamcorper eget, sodales a ipsum. Nam dignissim nisl eget enim laoreet, at volutpat nibh aliquet. Pellentesque pellentesque ornare lacus, congue pellentesque nisi porta pharetra. </p>
+                        </tal:d>
+                    </tal:block>
+                </div>
+                <div class="clr"></div>
+            </div>
+
+            <div class="contenedorDatosExhibicion">
+                <div class="columnaIzquierda">
+                    <div class="indice">
+                        <h3>Indice de documentos exhibidos</h3>
+                        <ul tal:condition="listaFotos">
+                            <tal:rr tal:repeat="li listaFotos">
+                                <li tal:define="liObj python:li.getObject();
+                                                esUno repeat/li/start;
+                                                classN liObj/tipoMedio;
+                                                remote liObj/urlRemoto"
+                                    tal:attributes="class python:esUno and classN+' activo' or classN"
+                                        class="libro"><a target="_blank" href="#" tal:attributes="href remote; alt li/Description"
+                                                        tal:content="li/Title">Boquitas pintadas</a></li>
+                            </tal:rr>
+                        </ul>
+                    </div>
+
+                    <div class="boxOtrosDatos">
+                        <div class="boxCuradorCV" tal:condition="curadorObj">
+                            <div class="responsables" tal:define="cureta python:curadorObj[0]">
+                                <div class="top">
+                                        <div class="contacto">
+                                                <a href="mailto:mail@mail.com"
+                                                tal:attributes="href string:mailto:${cureta/email}"><img src="++theme++arcas.theme/img/mailCurador.gif"></a>
+                                                
+                                        </div>
+                                </div>
+                                <div class="curadorIMG">
+                                    <img src=""  tal:replace="structure cureta/img"/>
+                                                                </div>
+                                                                <tal:cur tal:repeat="cura curadorObj">
+                                    <div class="datosCurador">		
+                                        <span class="labelM">Curador/a</span>
+                                        <span class="special" tal:content="python:cura['nombre']">Ernesto Trambonati</span>
+                                    </div>
+                                                                </tal:cur>						
+                                                                <tal:coor tal:condition="python:len(coord)>1">
+                                    <div>							
+                                        <span class="labelM">
+                                            <tal:span tal:condition="python:len(coord)>1">Coordinadores/as</tal:span>
+                                            <tal:span tal:condition="python:len(coord)<2">Coordinador/a</tal:span>
+                                            de la Colección
+                                        </span>
+                                        <tal:rr tal:repeat="coordina coord">
+                                            <span class="special" tal:content="coordina">Ernesto Trambonati</span>
+                                        </tal:rr>
+                                    </div>
+                                                                </tal:coor>
+                                                                <div class="clr"></div>
+                                                        </div>
+                            <tal:otros tal:condition="recursos">
+                                                        <div class="listadoEnlaces">
+                                                                <div class="top">
+                                                                        <div class="solapa activa">Otros recursos</div>
+                                                                        <div class="clr"></div>
+                                                                </div>
+                                                                <div class="centro">
+                                                                        <tal:r tal:repeat="enla recursos">
+                                                                                <div class="bloque">
+                                                                                        <tal:link tal:condition="python:enla.portal_type=='Link' ">
+                                                                                                        <a tal:attributes="href enla/getRemoteUrl;title enla/Title"
+                                                                                                                tal:content="enla/Title"></a> 
+                                                                                                                <span tal:content="enla/Description"></span>
+                                                                                        </tal:link>
+                                                                                        <tal:pagina tal:condition="python: not enla.portal_type=='Link' ">
+
+                                                                                                        <a href="" tal:attributes="href enla/getURL;
+                                                                                                                title enla/Description"
+                                                                                                        tal:content="enla/Title"></a>
+
+                                                                                                <span class="descri" tal:content="enla/Description"></span>
+                                                                                        </tal:pagina>
+                                                                                </div>
+                                                                        </tal:r>
+                                                                </div>
+                                                                <div class="pie">
+                                                                <a href="#" tal:attributes="href view/dameUriColeccion;title view/dameNombreColeccion">
+                                                                        Ir a la colección:
+                                                                        <div tal:replace="view/dameNombreColeccion"> asd </div>
+                                                                </a>
+                                                                </div>
+                                                        </div>
+                            </tal:otros>
+                            
+                            <tal:otros tal:condition="not: recursos">
+                            <div class="listadoEnlaces">
+                            <div class="pie">
+                                                                <a href="#" tal:attributes="href view/dameUriColeccion;title 	view/dameNombreColeccion">
+                                                                        Ir a la colección:  
+                                                                        <div tal:replace="view/dameNombreColeccion"> asd </div>
+                                                                </a>
+                                                        </div>
+                            </div>
+                            </tal:otros>
+                            
+                                                </div>
+                                        </div>
+                                </div>
+
+                                <div class="boxCreativeCommons">
+                                        CC licencia
+                                </div>
+
+
+                        </div>
+                
+                        </div>
+                        
+                        
+        
+                </metal:content-core>
+    </metal:content-core>
+
+    </body>
+</html>

@@ -1,0 +1,233 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="arcas.content">
+
+  <i18n:registerTranslations directory="locales" />
+
+  <!--
+    Be careful if you use general includeDependencies, it can have sideffects!
+    Better import explicite packages or configurations ;)
+  -->
+  <!--<includeDependencies package="." />-->
+
+ 
+
+  <include file="permissions.zcml" />
+
+  <include file="upgrades.zcml" />
+  <include file="behaviors.zcml" />
+
+<browser:resourceDirectory
+  name="arcas.content"
+  directory="browser/static" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="arcas.content"
+      directory="profiles/default"
+      description="Installs the arcas.content add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="arcas.content (uninstall)"
+      directory="profiles/uninstall"
+      description="Uninstalls the arcas.content add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.uninstall"
+      />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="arcas.content-hiddenprofiles"
+      />
+
+  <!-- -*- extra stuff goes here -*- -->
+
+
+  
+    <browser:page
+      name="view"
+      for="arcas.content.rootFolder.IRootFolder"
+      class="arcas.content.rootFolder.RootView"
+      template="templates/rootFolder.pt"
+      permission="zope2.View"      
+      />
+    
+    <browser:page
+        for="arcas.content.coleccionesFolder.IColeccionesFolder"
+        name="view"
+        class="arcas.content.coleccionesFolder.ColeccionesView"
+        template="templates/colecFolder.pt"
+        permission="zope2.View"
+     />
+      
+
+
+    <browser:page
+      name="view"
+      for="arcas.content.exhibicionesFolder.IExhibicionesFolder"
+      class="arcas.content.exhibicionesFolder.ExhibicionesFolderView"
+      template="templates/exhibicionesFolder.pt"
+      permission="zope2.View"
+      />
+    <browser:page
+      name="view"
+      for="arcas.content.coleccion.IColeccion"
+      class="arcas.content.coleccion.ColeccionView"
+      template="templates/coleccion.pt"
+      permission="zope2.View"
+       
+      />
+     
+     <!--browser:page
+      name="view"
+      for="arcas.content.biografia.IBiografia"
+      class="arcas.content.biografia.Biografia"
+      template="templates/biografia.pt"
+      permission="zope2.View"
+      />
+     
+     
+        <browser:page
+      name="view"
+      for="arcas.content.coleccion.IColeccion"
+      class="arcas.content.coleccion.Coleccion"
+      template="templates/coleccion.pt"
+      permission="zope2.View"
+       
+      />
+     
+     
+     
+     
+     
+    <browser:viewletManager
+        name="arcas.coleccion.seccion1"
+        provides=".colDerViewlets.ISeccionUno"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+    />
+    
+    <browser:viewletManager
+        name="arcas.coleccion.seccion2"
+        provides=".colDerViewlets.ISeccionDos"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"/>
+    
+    
+    
+        <plone:behavior
+        title="Columna Derecha"
+        description="Agrega capos para que se pueda customizar la columna derecha de un documento"
+        provides=".behaviors.IColDerSeccion"
+        for="arcas.content.coleccion.IColeccion"/>
+        <plone:behavior
+            title="GroupColeccion"
+            description="Agrega un campo nombre de grupo."
+            provides=".behaviors.IColecGroupName"
+            factory =".behaviors.ColecGroupName"/>
+        
+    <browser:page
+      name="editItem"
+      for="arcas.content.rootFolder.IRootFolder"
+      class="arcas.content.editItem.EditItem"
+      permission="zope2.View"
+      /> 
+   <browser:page
+          for="*"
+          name="json_exhibiciones"
+          permission="zope2.Public"
+          class=".jsonView_exhibaners.JSONExhibicionesList"
+          />
+          
+
+  <browser:page
+      name="view"
+      for="arcas.content.exhibicion.IExhibicion"
+      class="arcas.content.exhibicion.Exhibicion"
+      template="templates/exhibicion.pt"
+      permission="zope2.View"
+      />
+  <browser:page
+      name="view"
+      for="arcas.content.exhibicionesFolder.IExhibicionesFolder"
+      class="arcas.content.exhibicionesFolder.ExhibicionesFolder"
+      template="templates/exhibicionesFolder.pt"
+      permission="zope2.View"
+      />
+  <browser:page
+      name="view"
+      for="arcas.content.enlacegs.IEnlacegs"
+      class="arcas.content.enlacegs.IEnlacegs"
+      template="templates/enlacegs.pt"
+      permission="zope2.View"
+      />      
+    <browser:page
+      name="AddForm"
+      for="arcas.content.enlacegs.IEnlacegs"
+      class="arcas.content.enlacegs.AddForm"
+      permission="zope2.View"
+      />      
+    <browser:page
+      name="EditForm"
+      for="arcas.content.enlacegs.IEnlacegs"
+      class="arcas.content.enlacegs.EditForm"
+      permission="zope2.View"
+      />   
+     <browser:page
+        for="*"
+        name="formsOk_view"
+        permission="zope2.Public"
+        class=".formsOk_view.FormsOkView"
+        template="templates/formsOk_view.pt"
+    />
+    <browser:page
+        for="*"
+        name="formsCancel_view"
+        permission="zope2.Public"
+        class=".formsCancel_view.FormsCancelView"
+        template="templates/formsCancel_view.pt"
+    />
+    
+    
+    
+    <browser:page
+            name="coleccionesView"
+            for="*"
+            class=".browser.ListadoColeccion"
+            permission="zope2.View"
+            template="templates/listaC.pt"
+            layer="arcas.content.interfaces.IArcasContentLayer"
+            />
+    <browser:page
+            name="exhibPorColeccion"
+            for="arcas.content.exhibicionesFolder.IExhibicionesFolder"
+            class=".browser.BuscarExhibiciones"
+            permission="zope2.View"
+            template="templates/exhibPorColeccion.pt"
+            layer="arcas.content.interfaces.IArcasContentLayer"
+            />
+    <browser:page
+            name="redirect_view"
+            for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+            class=".browser.RedidectionView"
+            permission="zope2.View"
+            layer="arcas.content.interfaces.IArcasContentLayer"
+            />
+    <browser:page
+            for="Products.ATContentTypes.content.document.ATDocument"
+            name="document_view"
+            class=".browser.DocumentView"
+            template="browse/document_view.pt"
+            layer="arcas.content.interfaces.IArcasContentLayer"
+            permission="zope2.View"
+     /-->
+          
+</configure>

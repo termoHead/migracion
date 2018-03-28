@@ -1,0 +1,27 @@
+<html metal:use-macro="views/standard_macros/view">
+<meta charset="utf-8">
+<body>
+<div metal:fill-slot="body">
+
+    <div class="labe">
+        <div class="label">
+            ----------
+            <tal:r tal:define="colas view/dameListaColecciones | nothing"
+                   tal:repeat="cola colas"
+                   tal:condition="colas">
+                <div class="boxColeccio">
+                    <div class="colImg">
+                        <img src="#" tal:attributes="src string:${cola/url}/@@images/imagenCabecera" class="classImg"/>
+                    </div>
+                    <div class="colDesc"></div>
+                    <div class="clr"></div>
+                </div>
+            </tal:r>
+
+            -----------
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

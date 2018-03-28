@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+<body>
+<metal:content-core fill-slot="main">
+    <metal:content-core define-macro="main">
+
+        <h2>
+            Listado de exhibiciones sobre: <span tal:content="view/dameNomColeccion">Colección</span>
+        </h2>
+
+        <div class="boxLisdato" tal:define="listado view/dameListaExhib|nothing">
+            <tal:r tal:condition="listado"
+                   tal:repeat="colec listado">
+                <div class="coleccion" tal:attributes="style string:background-image:url('${colec/url}/@@images/bgCabezalLista')">
+                    <div class="colImg">
+                        <img src="#" tal:attributes="src string:${colec/url}/@@images/imagenLista" class="classImg"/>
+                    </div>
+                    <div class="colDescri">
+                        <h3 ><a href=""
+                                tal:attributes="href colec/url;
+                                                title colec/titulo"
+                                tal:content="colec/titulo">Titulo coleccion
+                        </a></h3>
+                        <div tal:content="colec/descri"></div>
+                    </div>
+                    <div class="colInfo">
+
+
+
+                        <div class="boxCoordinador">
+                            <div>
+                                <span class="labelCurador">Curador</span>
+                                <tal:r tal:repeat="curador colec/curador">
+                                    <div>
+                                        <img src=""  tal:replace="structure curador/@@images/retrato/thumb"/>
+                                        <span tal:content="curador/title"></span>
+                                    </div>
+                                </tal:r>
+                            </div>
+                            Coordinador de la colección
+                            <tal:rC tal:repeat="coor colec/coors">
+
+                                <a href="#" tal:attributes="href string:mailto:${coor/email}; title coor/title"
+                                   tal:content="coor/title">Nombre coordinador</a>
+                            </tal:rC>
+                        </div>
+                    </div>
+                    <div class="clr"></div>
+                </div>
+            </tal:r>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="arcas.content">
+
+    <include package="plone.behavior" file="meta.zcml" />
+    <include package="plone.directives.form" file="meta.zcml" />
+    <include package="plone.directives.form" />
+
+   
+    <plone:behavior
+            title="GroupColeccion"
+            description="Agrega un campo nombre de grupo."
+            provides=".behaviors.IColecGroupName"
+            factory =".behaviors.ColecGroupName"
+            />
+    <plone:behavior
+        title="Columna Derecha"
+        description="Agrega capas para que se pueda customizar la columna derecha de un documento"
+        provides=".behaviors.IColDerSeccion"
+        for="arcas.content.coleccion.IColeccion"
+        />
+
+</configure>

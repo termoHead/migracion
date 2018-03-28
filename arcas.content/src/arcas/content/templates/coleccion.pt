@@ -1,0 +1,190 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="arcas.content">
+<body>
+
+<metal:content-core fill-slot="main">
+    <metal:content-core define-macro="main">
+	<div class="markColeccion">
+        <div class="boxHeader"
+                tal:attributes="style string:background:url(${context/absolute_url}/images/imagenCabecera) no-repeat">
+
+            <div class="bloqH">
+
+                <div class="tituloColeccion">
+                    <span class="subtituloColeccion">COLECCION</span>
+                    <h2  tal:content="context/title">Manuel<br>Puig</h2>
+                    <div class="clr">&nbsp; </div>
+                </div>
+                
+                <div class="colecBox">
+				<a href="navFuentes.php"  class="linkFuentes" tal:attributes="href view/getUrlAFuente; title context/altNavegarFuente">
+				<img src="/++theme++arcas.theme/images/irA.gif" alt=""/>Navegar Fuentes</a>
+                    <form target="_blank" method="get" tal:attributes="action string:/greenstone3/library/collection/${context/GS_ID}/search/TextQuery">
+                       <span tal:replace="structure context/@@authenticator/authenticator" />
+                       <input name="s1.query" class="buscaTexto" id="s1.query"  value="Buscar en la colección" type="text"/>
+                       <input name="idColec" id="idColec"  type="hidden" tal:attributes="value context/GS_ID" />
+
+                        <input type="hidden" class="context" name="qs" value="1"/>
+                        <input type="hidden" class="s1.level" name="s1.level" value="Doc"/>
+                        <input type="hidden" class="s1.level" name="rt" value="rd"/>
+                        <input type="hidden" class="s1.level" name="startPage" value="1"/>
+                        <input type="hidden" class="s1.level" name="s1.index" value="ZZ"/>
+
+                       <input type="hidden" class="context"
+                               name="form.button.Search"
+                               value="Search"/>
+                    </form>
+                    <tal:edit tal:condition="python:False">
+		                <div class="botEditFuente" >
+				            <a href="navFuentes.php"                          
+				                tal:attributes="href string:/arcas/portada/editGs?coleccion=${context/GS_ID}; 
+				                title string:Editar Fuentes de esta colección">
+								<img src="/++theme++arcas.theme/images/irA.gif" alt=""/>Editar Fuetes</a>
+		                </div>
+                    </tal:edit>
+
+                    <tal:pieimagen tal:condition="context/textoAltCabecera | none">
+					<span id="altCabecera" tal:content="context/textoAltCabecera"></span>
+</tal:pieimagen>
+                    <div class="clr">&nbsp; </div>
+                </div>
+                <div class="clr">&nbsp; </div>
+            </div>
+            <div class="clr">&nbsp; </div>
+
+        </div>
+
+
+        <div class="busquedaColeccion ">
+            <form>
+                <select><option>Navegar Fuentes</option></select>
+                <input name="buscar" value="Buscar en la coleccion" type="text"></form>
+                
+            <div class="clr"></div>
+        </div>
+        <div class="clr"></div>
+        <div class="boxColumnas">
+            <div class="columnaUno"
+                    tal:define="cuerpoText context/cuerpo/output|nothing">
+                <div class="descriColect">
+                    <h4>Acerca de esta Coleccion</h4>
+                    <p tal:content="context/description">Descripción de la colección</p>
+                    <div tal:condition="cuerpoText" class="extraColeccion" style="display:none" tal:content="structure  cuerpoText">Descripción de la colección</div>
+                    <div class="pie">
+                        <a href="#" id="masColecBoton" onclick="togTexto(this);return false" tal:attributes="title context/title">(+) expandir texto</a>
+                    </div>
+
+                </div>
+                <div class="boxCoord">
+                    <tal:coordinadores tal:define="coors view/getCoordinadores | nothing"
+                                       tal:condition="coors">
+                        <div class="coordinador"
+                                tal:repeat="coor coors">
+                            <img src="" tal:replace="structure coor/img" />
+                            <div class="datos">
+                                <div class="contacto">
+                                    <a href="mailto:mail@mail.com"
+                                       tal:attributes="title coor/title;
+                                                       href string:mailto:${coor/email}">
+                                            <img src="++images/mail.gif" tal:attributes="src string:++theme++arcas.theme/images/mail.gif;title coor/title;"/></a>
+                                            <span tal:condition="coor/cv"> |
+                                                <a href="#" target="_blank" tal:attributes="href coor/cv">CV</a>
+                                            </span>
+                                </div>
+                                <span>Coordinador/a de la Colecci&oacute;n</span>
+                                <h4 tal:content="coor/title">Horacio A. Prekel</h4>
+                            </div>
+                            <div class="clr"></div>
+                        </div>
+                    </tal:coordinadores>
+                </div>
+                <div class="boxRecomienda"
+                        tal:define="listadoReco view/dameDicRecomendados | nothing"
+				        tal:condition="listadoReco">
+                    <span class="label">Lecturas que profundizan en este tema</span>
+                   
+                    <div id="tabs"                            
+                                    tal:condition="python:len(listadoReco)>0">
+                            <div tal:condition="python:context.portal_membership.getAuthenticatedMember().id=='admin'">                                
+                                
+                                <div id="toolbarEstudios" style="display:none">
+                                <input type="button" value="borrar estudios" id="borraEstudio" />
+                                <input type="button" value="agregar estudio" id="agregaEstudio"/>
+                                </div>
+                                <input type="checkbox" name="editarSugeridos" value="editar" onclick="$('#toolbarEstudios').toggle()"> 
+                            </div>
+                        <div class="top">
+                             <a id="estudios"></a>
+                            <tal:rra tal:repeat="item listadoReco" >
+                                <div tal:define="activola repeat/item/start"									
+                                     tal:attributes="class python:activola and 'solapa activa' or 'solapa'">
+                                    <a href="" tal:attributes="href item/url;
+									rel string:#enlace${repeat/item/index}"									
+                                   tal:content="item/titulo"></a>
+                                </div>
+                            </tal:rra>
+                            <div class="clr"></div>
+                        </div>
+                        <div class="centro">
+                            <tal:recm tal:repeat="box listadoReco">
+                                <div tal:define="esPri repeat/box/start "
+                                     tal:attributes="id string:enlace${repeat/box/index};
+                                     class python: not esPri and 'oculto'" >
+                                    <div class="item" tal:repeat="subI box/content">
+                                        <tal:define tal:define="tipo subI/tipo|nothing;
+                                                                lautores subI/autores | nothing">
+                                            <span class="tipo" tal:condition="tipo" >(<tal:tip tal:replace="python:subI['tipo'].upper()" />)</span>
+                                            <div class="autores">
+                                                <tal:r tal:repeat="autorA lautores">
+                                                    <span class="autores"
+                                                            tal:content="autorA" tal:condition="lautores">Forasteli, Fabrici
+                                                    </span>
+                                                    <span tal:condition="not: repeat/autorA/end"
+                                                            tal:content="string:; ">; </span>
+                                                  </tal:r>
+                                            </div>
+                                            <a href="#" target="_blank" tal:attributes="href subI/url" tal:content="subI/titulo"></a>
+                                        </tal:define>
+                                    </div>
+                                </div>
+                            </tal:recm>
+                        </div>
+                    </div>
+                </div>
+                <div class="bannerExhibicion"
+                        tal:define="banners view/dameBanners | nothing"
+                        tal:condition="banners">
+                    <tal:a tal:repeat="baner banners">
+<tal:con tal:condition="not: baner/vacio">
+                        <a href="#" tal:attributes="href baner/url;title baner/titulo">
+                            <img src="images/bannerExhibicionPuig.jpg"
+                                 tal:attributes="src string:${baner/url}/images/baner;
+                                                title baner/titulo"/></a>
+</tal:con>
+                    </tal:a>
+                </div>
+            </div>
+            <div class="columnaDos">            
+                <div class="colDerSec1">
+                    <!--Seccion 1 -->                                   
+                    <div tal:replace="structure view/getSecc1" />
+                    <!--fin Seccion 1 -->
+                </div>
+                <div class="colDerSec2">
+                    <!--Seccion 2 -->
+                    <div tal:replace="structure view/getSecc2" />
+                    <!--fin Seccion 2 -->
+                </div>                
+            </div>
+        </div>
+	</div>
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

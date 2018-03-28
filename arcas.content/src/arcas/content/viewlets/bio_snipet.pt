@@ -1,0 +1,35 @@
+<div class="componente-box" i18n:domain="arcas.content">
+ <div class="wrapComp">
+     <div class="boxBio" tal:define="listBios view/getBioList|nothing"
+            tal:condition="listBios">
+        <tal:unBio tal:condition="python:len(listBios)<2"
+                tal:define="unAutor python:listBios[0]">
+            <div class="bio">
+                <h4>BREVE BIOGRAFIA</h4>
+                <p tal:content="unAutor/descri"></p>
+                <div class="pie">
+                    <a href="#" target="_blank" tal:attributes="href unAutor/url;alt string:ver más sobre ${unAutor/nombre}"
+                        alt="más sobre su vida">(+) sobre su vida</a>
+                </div>
+            </div>
+        </tal:unBio>
+        <tal:unBio tal:condition="python:len(listBios)>1">
+            <h4>BREVES BIOGRAFIAS</h4>
+            <tal:rep tal:repeat="autor listBios">
+                <div class="bio">
+                    <h4>BREVE BIOGRAFIA</h4>
+                    <p tal:content="autor/descri"></p>
+                    <div class="pie">
+                        <a href="#" tal:attributes="href autor/url;alt string:ver más sobre ${autro/nombre}"
+                            alt="más sobre su vida">biografía completa</a>
+                    </div>
+                </div>
+                <div class="produccion">
+                    <h4>PRODUCCION</h4>
+                    <div class="produccion" tal:content="structure autor/listado"></div>
+                </div>
+            </tal:rep>
+        </tal:unBio>
+    </div>
+</div>
+</div>

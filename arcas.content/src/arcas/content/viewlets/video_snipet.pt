@@ -1,0 +1,15 @@
+<div class="componente-box" i18n:domain="arcas.content">
+    <div class="wrapComp" tal:define="miSec view/dameSeccionActual;
+                       titulo python: miSec==1 and view.context.titulo1 or view.context.titulo2;                       
+                       strImg python:miSec==1 and 'ria1' or 'ria2'"> 
+    <h4 tal:condition="titulo"
+    tal:content="titulo">titulo</h4>
+    
+    
+    <video  width="347" controls>
+	<source src="#" tal:attributes="src string:${view/context/absolute_url}/@@images/${strImg}" />
+	<p>Your browser does not support H.264/MP4.</p>
+    </video>
+    
+    </div>    
+</div>

@@ -1,0 +1,18 @@
+<div class="componente-box" i18n:domain="arcas.content">
+    <div class="wrapComp" tal:define="miSec view/dameSeccionActual;
+                       titulo python: miSec==1 and view.context.titulo1 or view.context.titulo2;
+                       imagen  python:miSec==1 and view.context.picture1 or view.context.picture2;
+                       strImg python:miSec==1 and 'picture1' or 'picture2'"> 
+                       
+    <h4 tal:condition="titulo" tal:content="titulo">Una imagen, verdad?</h4>
+    
+    <div tal:define="picture nocall:imagen"
+                tal:condition="nocall:imagen">
+        <img tal:attributes="src string:${view/context/absolute_url}/@@images/${strImg};
+                         height imagen/_height | nothing;
+                         width imagen/_width | nothing;
+                         alt imagen/filename"/>
+     </div>
+    
+    </div>
+</div>

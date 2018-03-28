@@ -1,0 +1,35 @@
+<div class="componente-box" i18n:domain="arcas.content">
+<div class="wrapComp">
+    <div class="galeriaBox"
+            tal:define="imags view/getImagenes|nothing"
+            tal:condition="imags">
+        <div class="botonera">
+            <a href="#" id="moveLeft"> <img src="++theme++arcas.theme/img/flechaL.gif" class="oculto" title="Mostrar más" /> </a>
+            <h4>GALERIA DE IMAGENES</h4>&nbsp;
+            <a href="#" id="moveRight"> 
+                <img src="++theme++arcas.theme/img/flechaR.gif" class="oculto"  title="Mostrar más" /> 
+            </a>
+            <div class="clr"></div>
+        </div>
+        <div class="photoAlbumRow">
+            <tal:repite tal:repeat="img imags">
+                <div class="photoAlbumEntry">
+                    <a href="#" class="colorboxLink cboxElement"
+                        rel="colorbox" target="_blank"
+                        tal:attributes="href  string:${img/brain/getURL};
+                        title img/brain/Title;">
+                        <img src="" alt="" tal:attributes="
+                        src string:${img/brain/getURL}/image_thumb;
+                        alt img/brain/Title;
+                        width img/width;" />
+                    </a>
+                </div>
+                <script language="javascript" tal:condition="repeat/img/end">
+                    comodaGaleria()
+                </script>
+            </tal:repite>
+        </div>
+        <div class="clr"></div>
+    </div>
+    </div>
+</div>

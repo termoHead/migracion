@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<rolemap>
+    <roles>
+        <role name="Coordinador"/>
+        <role name="Curador"/>
+    </roles>
+    <permissions>
+        <permission name="Arcas: Add Coleccion" acquire="False">			
+            <role name="Manager" />
+            <role name="Site Administrator" />
+        </permission>
+		<permission name="Arcas: Add Exhibicion" acquire="False">
+            <role name="Manager" />
+			<role name="Coordinador" />
+            <role name="Site Administrator" />
+        </permission>
+		<permission name="Arcas: Define Curador" acquire="False">
+            <role name="Manager" />
+			<role name="Coordinador" />
+            <role name="Site Administrator" />
+        </permission>
+		<permission name="Arcas: Define Colaborador en Coleccion" acquire="False">
+            <role name="Manager" />
+			<role name="Coordinador" />
+            <role name="Site Administrator" />
+        </permission>
+		<permission name="Arcas: Define Colaborador en Exhibicion" acquire="False">
+            <role name="Manager" />
+			<role name="Coordinador" />
+			<role name="Curador"	 />
+            <role name="Site Administrator" />
+        </permission>
+		<permission name="Arcas: add Carpetas en Coleccion" acquire="False">
+            <role name="Manager" />
+			<role name="Coordinador" />
+            <role name="Site Administrator" />
+        </permission>
+		<permission name="Arcas: add Carpetas en Exhibicion" acquire="False">
+            <role name="Manager" 			/>
+			<role name="Coordinador"		/>
+			<role name="Curador"	 		/>
+            <role name="Site Administrator" />
+        </permission>
+    </permissions>
+</rolemap>
