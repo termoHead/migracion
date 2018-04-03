@@ -16,7 +16,7 @@ from AccessControl.interfaces import IRoleManager
 logger = logging.getLogger("Plone")
 from Products.PluggableAuthService.interfaces.events import IPASEvent
 from Products.CMFCore.permissions import setDefaultRoles
-
+from Products.Archetypes.utils import shasattr # To avoid acquisition
 PREFIJO_COOR_GROUP="_coor"
 PREFIJO_COOR_POTENCIAL="_pot"
 
@@ -48,11 +48,8 @@ def onSetupColeccion(colectObj, event):
                 #
                 # Habilita el filtrado de tipos de contenidos
                 #
-                new_obj.setConstrainTypesMode(constraintypes.ENABLED)
-                # Types for which we perform Unauthorized check
-                new_obj.setLocallyAllowedTypes(carpeta["constraint"])
-                # Add new... menu  listing
-                new_obj.setImmediatelyAddableTypes(carpeta["constraint"])
+                ENABLED = 1
+              
 
                 try:
                     workflowTool.doActionFor(new_obj, "publish")
@@ -65,6 +62,20 @@ def onSetupColeccion(colectObj, event):
                     pass
                     
                 new_obj.reindexObject()
+                
+                if shasattr(new_obj, 'canSetConstrainTypes'):
+                    new_obj.setConstrainTypesMode(constraintypes.ENABLED)
+                    # Types for which we perform Unauthorized check
+                    new_obj.setLocallyAllowedTypes(carpeta["constraint"])
+                    # Add new... menu  listing
+                    new_obj.setImmediatelyAddableTypes(carpeta["constraint"])
+                else:
+                    from Products.CMFPlone.interfaces import ISelectableConstrainTypes
+                    constraints = ISelectableConstrainTypes(new_obj)
+                    constraints.setConstrainTypesMode(ENABLED)
+                    constraints.setLocallyAllowedTypes(carpeta["constraint"])
+                    
+                    
                 flag=flag+1
             else:
                 print "la carpeta estaba creada"
