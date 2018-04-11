@@ -19,7 +19,7 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from plone.indexer import indexer
 from Products.statusmessages.interfaces import IStatusMessage
 
-
+from plone.indexer import indexer
 
 
 def isValidURL(value):
@@ -79,11 +79,11 @@ class IEnlacegs(form.Schema):
     )
     
 
-    
-@grok.adapter(IEnlacegs, name='urlRemoto')
 @indexer(IEnlacegs)
-def remoteURLIndexer(context):
-    return context.urlRemoto
+def urlRemotoIndexer(obj):
+    return obj.urlRemoto
+
+    
 
 from Acquisition import aq_inner
 from plone.directives.dexterity import DisplayForm
@@ -130,10 +130,8 @@ class EditForm(dexterity.EditForm):
         redirect_url=self.context.aq_parent.absolute_url()
         return self.request.response.redirect(redirect_url) 
         
-
-class View(DisplayForm):
-    grok.context(IEnlacegs)
-    grok.require('zope2.View')
+from Products.Five import BrowserView
+class View(BrowserView):
 
     
     def dameIcon(self):

@@ -93,7 +93,34 @@
         name="edit"
         class=".coleccion.EditForm"
         permission="cmf.ModifyPortalContent"
-/>
+    />
+    
+    <adapter factory=".enlacegs.urlRemotoIndexer" name="urlRemoto" />
+    
+    <browser:page
+        for="arcas.content.enlacegs.IEnlacegs"
+        class=".enlacegs.EditForm"
+        name="editE"
+        template="templates/enlacegs.pt"
+        permission="cmf.ModifyPortalContent"
+    />
+      <browser:page
+      name="view"
+      for="arcas.content.enlacegs.IEnlacegs"
+      class="arcas.content.enlacegs.View"
+      template="templates/enlacegs.pt"
+      permission="zope2.View"
+      />      
+      
+      
+        <browser:page
+      name="view"
+      for="arcas.content.exhibicion.IExhibicion"
+      class="arcas.content.exhibicion.View"
+      template="templates/exhibicion.pt"
+      permission="zope2.View"
+      />
+      
    <utility
             component=".vocabularios.GroupMembersVocabFactory"
             name="arcas.CoorMembersVocab"
@@ -217,13 +244,7 @@
           />
           
 
-  <browser:page
-      name="view"
-      for="arcas.content.exhibicion.IExhibicion"
-      class="arcas.content.exhibicion.Exhibicion"
-      template="templates/exhibicion.pt"
-      permission="zope2.View"
-      />
+
   <browser:page
       name="view"
       for="arcas.content.exhibicionesFolder.IExhibicionesFolder"

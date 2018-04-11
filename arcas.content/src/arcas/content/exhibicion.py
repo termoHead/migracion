@@ -88,8 +88,8 @@ class IExhibicion(form.Schema):
     )
 
     
-
-class View(DisplayForm):
+from Products.Five import BrowserView
+class View(BrowserView):
     
     def listadoDeImagenesGS3(self):
         """Trae todos los recursoGS3 en la carpeta enlacesgs"""

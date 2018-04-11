@@ -44,17 +44,17 @@ class ExhibicionesFolderView(BrowserView):
         catalogo=getToolByName(contexto,"portal_catalog")
         result  =catalogo(object_provides=IExhibicion.__identifier__)
         listados=[]
-        
 
+        
         for exhi in result:
 
             miOb = contexto.unrestrictedTraverse(exhi.getPath())
             if miOb.coleccionR!=None:
-                miCol= miOb.coleccionR[0].to_object
+                miCol= miOb.coleccionR.to_object
                 ppa=ColeccionUtils(miCol)
 
                 listados.append({
-                    "id":exhi.id,
+                    "id":       exhi.id,
                     "titulo"    :exhi.Title,
                     "subTitulo" :miCol.Title(),
                     "descri"    :exhi.Description,

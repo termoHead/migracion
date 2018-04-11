@@ -102,7 +102,7 @@
                                                     tal:attributes="href link/getURL;
                                                                     class python: finClass;">
                                             <img src="#" width="52" 
-                                                tal:attributes="src link/urlRemoto;
+                                                tal:attributes="src python:link.getObject().urlRemoto;
                                                                 title link/Description"
                                                                 tal:condition="python:tipoM!='audio'"/>
                                                                 
@@ -132,7 +132,7 @@
 
                     <div class="pagina" tal:condition="datosFull" tal:define="tipoM python:listaFotos[0].getObject().tipoMedio">
                         <img class="scan" src="++theme++arcas.theme/images/paginaEj.jpg"
-                            tal:attributes="src python:listaFotos[0].urlRemoto;
+                            tal:attributes="src python:listaFotos[0].getObject().urlRemoto;
                                             title python:listaFotos[0].Description"
                             tal:condition="python:tipoM=='imagen'"/>
                         <div id="popupPlayer" class="ui-widget-header" tal:condition="python:tipoM=='audio'">                                

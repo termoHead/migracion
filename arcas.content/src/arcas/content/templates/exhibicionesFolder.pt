@@ -10,8 +10,9 @@
     <metal:content-core define-macro="main">
 	<div class="markListExhibicion"
             tal:define="textoF context/cuerpo|nothing">
+            
             <div class="cabezalInterno">
-                <h2>Exhibiciones virtuales</h2>
+                <h2>Exhibiciones virtuales!!!!</h2>
                 <div class="clr"></div>
             </div>
             <div class="conColumnas">
