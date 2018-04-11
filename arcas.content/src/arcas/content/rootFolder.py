@@ -22,6 +22,15 @@ import DateTime
 from Acquisition import aq_inner
 from plone.directives.dexterity import DisplayForm
 from plone.dexterity.utils import createContentInContainer
+from arcas.content.exhibicionesFolder import IExhibicionesFolder
+from arcas.content.coleccion import IColeccion
+from plone.autoform import directives
+from plone.formwidget.autocomplete import AutocompleteFieldWidget
+from plone.formwidget.contenttree import MultiContentTreeFieldWidget
+from plone.formwidget.contenttree import PathSourceBinder
+from plone.formwidget.contenttree import ObjPathSourceBinder
+
+
 
 class IRootFolder(model.Schema):
     """Una carpeta principal para documentos publicos
@@ -30,23 +39,20 @@ class IRootFolder(model.Schema):
         title=_(u"Texto principal"),
         required=True,
     )
-    exhiDestacada = RelationList(
+    directives.widget(exhiDestacada=AutocompleteFieldWidget)
+    exhiDestacada = RelationChoice(
         title=u"Selecciones una Exhibicion",
         description=u"Seleccione la exhibicion a destacar",
-        value_type=RelationChoice(
-            source=ObjPathSourceBinder(portal_type='arcas.exhibicion')
-            ),
+        source=ObjPathSourceBinder(object_provides=IExhibicion.__identifier__),
         required=False,
     )
 
 from Products.Five import BrowserView
 from plone.dexterity.browser.view import DefaultView
 class RootView(DefaultView):
-    
     def getExhiDestacado(self):
         ##recreaFolder= self.getContainer(folder.encode('utf8'))
         ##cuando busca documento hace referencia al campo "documento" que es el destacado del directorio
-        
         if self.context.exhiDestacada!=None:
             if len(self.context.exhiDestacada)==0:
                 print "no hay exhibiciones asiganadas al portlet"
@@ -84,7 +90,7 @@ class RootView(DefaultView):
 
     def listExhiUrl(self):
         """Devuelve la url al listado de exhibiciones"""
-        from arcas.content.exhibicionesFolder import IExhibicionesFolder
+        
         catalog=getToolByName(self.context,"portal_catalog")
         exlis=catalog(object_provides=IExhibicionesFolder.__identifier__)
         if len(exlis)>0:
@@ -123,8 +129,11 @@ class RootView(DefaultView):
     def getColecciones(self):
         ##recreaFolder= self.getContainer(folder.encode('utf8'))
         ##cuando busca documento hace referencia al campo "documento" que es el destacado del directorio
+        
         catalog=getToolByName(self.context,"portal_catalog")
-        colList=catalog.searchResults(portal_type='arcas.coleccion',review_state='Publicado')
+        
+        colList=catalog.searchResults(object_provides=IColeccion.__identifier__)
+        #colList=catalog.searchResults(portal_type='arcas.coleccion',review_state='Publicado')
         resuList=[]
         extraFUrl=""
         extraFT=""

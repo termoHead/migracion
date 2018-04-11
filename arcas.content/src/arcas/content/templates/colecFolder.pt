@@ -19,7 +19,7 @@
                     <p tal:condition="cuerpo" tal:content="structure cuerpo">texto</p>
                 </div>
             </div>
-            
+            <hr />
             <div class="cuerpoListado">
                 <div class="categoria" tal:repeat="categoria view/dameCategorias|nothing"
                 tal:attributes="class string:categoria color${categoria/color}">	

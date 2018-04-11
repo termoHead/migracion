@@ -13,12 +13,11 @@ from plone.directives import form
 from arcas.content.behaviors import IColecGroupName
 from arcas.content.eventos import PREFIJO_COOR_GROUP
 
-
-from z3c.relationfield.schema import RelationList, RelationChoice
+from z3c.relationfield.schema import RelationChoice
 from plone.formwidget.contenttree import ObjPathSourceBinder
+
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
 from plone.formwidget.contenttree import ContentTreeFieldWidget
-from plone.formwidget.contenttree import ObjPathSourceBinder
 
 from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
@@ -26,6 +25,7 @@ from Products.CMFCore import permissions
 
 from Acquisition import aq_inner
 from plone.directives.dexterity import DisplayForm,EditForm
+from plone.autoform import directives
 
 try:
     from arcas.content.coleccion import IColeccion
@@ -79,16 +79,15 @@ class IExhibicion(form.Schema):
         value_type=schema.Choice(source="arcas.ExhibicionMembersVocab"),
         required=False
     )
-
-
-    coleccionR = RelationList(
+    directives.widget(coleccionR=AutocompleteFieldWidget)
+    coleccionR = RelationChoice(
         title=u"Colección Relacionada",
         description=u"Colección a la que pertenece esta exhibicón",
-        value_type=RelationChoice(
-            source=ObjPathSourceBinder(portal_type='arcas.coleccion')
-        ),
+        source=ObjPathSourceBinder(object_provides=IColeccion.__identifier__),
         required=False,
     )
+
+    
 
 class View(DisplayForm):
     

@@ -16,6 +16,7 @@ from arcas.content.coleccion import IColeccion
 from arcas.content.config import URL_GREENSTON_DOC
 from arcas.content.utils import ColeccionUtils
 import unicodedata
+from arcas.content.categoria import ICategoria
 
 class IColeccionesFolder(form.Schema):
     """Carpeta que guarda colecciones"""
@@ -48,7 +49,8 @@ class ColeccionesView(BrowserView):
         """Devuelve un listado de categorias"""        
         self.contexto = self.context.aq_inner
         self.catalogo=getToolByName(self.contexto,"portal_catalog")
-        brains=self.catalogo(path={ "query": "/arcas/categorias" }, sort_order="ascending")
+        
+        brains=self.catalogo(object_provides=ICategoria.__identifier__, sort_order="ascending")
         colecciones=self.dameListaColecciones()        
         ls=[]
         
@@ -64,6 +66,7 @@ class ColeccionesView(BrowserView):
                         micate["listado"].append(coleccion)
                         
                 ls.append(micate)
+        
         return ls
 
     def elimina_tildes(self,s):
