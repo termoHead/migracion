@@ -104,7 +104,7 @@
         template="templates/enlacegs.pt"
         permission="cmf.ModifyPortalContent"
     />
-      <browser:page
+    <browser:page
       name="view"
       for="arcas.content.enlacegs.IEnlacegs"
       class="arcas.content.enlacegs.View"
@@ -113,13 +113,24 @@
       />      
       
       
-        <browser:page
+    <browser:page
       name="view"
       for="arcas.content.exhibicion.IExhibicion"
       class="arcas.content.exhibicion.View"
       template="templates/exhibicion.pt"
       permission="zope2.View"
       />
+        
+            
+    <browser:page
+      name="view"
+      for="arcas.content.biografia.IBiografia"
+      class="arcas.content.biografia.View"
+      template="templates/biografia.pt"
+      permission="zope2.View"
+      />
+     
+        
       
    <utility
             component=".vocabularios.GroupMembersVocabFactory"
@@ -161,37 +172,35 @@
     
     
     
-     <subscriber
+        <subscriber
             for="arcas.content.coleccion.IColeccion
                  Products.CMFCore.interfaces.IActionSucceededEvent"
             handler=".eventos.onSetupColeccion"
             />
-    <subscriber
+        <subscriber
             for="arcas.content.coleccion.IColeccion
                  zope.lifecycleevent.interfaces.IObjectAddedEvent"
             handler=".eventos.onSaveColeccion"
             />
-    <subscriber
+        <subscriber
             for="arcas.content.coleccion.IColeccion
                  zope.lifecycleevent.interfaces.IObjectModifiedEvent"
             handler=".eventos.onModificaColeccion"
             />
-    <subscriber
+        <subscriber
             for="arcas.content.coleccion.IColeccion
                 zope.lifecycleevent.interfaces.IObjectRemovedEvent"
             handler=".eventos.onDelColeccion"
-/>
-    
-     <!--browser:page
-      name="view"
-      for="arcas.content.biografia.IBiografia"
-      class="arcas.content.biografia.Biografia"
-      template="templates/biografia.pt"
-      permission="zope2.View"
-      />
-     
-     
+        />
         <browser:page
+          for="*"
+          name="json_exhibiciones"
+          permission="zope2.Public"
+          allowed_attributes="render"
+          class=".jsonView_exhibaners.JSONExhibicionesList"
+          />
+     
+        <!--browser:page
       name="view"
       for="arcas.content.coleccion.IColeccion"
       class="arcas.content.coleccion.Coleccion"
@@ -202,7 +211,7 @@
      
      
      
-     
+
      
     <browser:viewletManager
         name="arcas.coleccion.seccion1"
@@ -221,7 +230,7 @@
     
         <plone:behavior
         title="Columna Derecha"
-        description="Agrega capos para que se pueda customizar la columna derecha de un documento"
+        description="Agrega campos para que se pueda customizar la columna derecha de un documento"
         provides=".behaviors.IColDerSeccion"
         for="arcas.content.coleccion.IColeccion"/>
         <plone:behavior
@@ -236,12 +245,8 @@
       class="arcas.content.editItem.EditItem"
       permission="zope2.View"
       /> 
-   <browser:page
-          for="*"
-          name="json_exhibiciones"
-          permission="zope2.Public"
-          class=".jsonView_exhibaners.JSONExhibicionesList"
-          />
+    
+
           
 
 

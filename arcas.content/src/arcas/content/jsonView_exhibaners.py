@@ -1,4 +1,6 @@
-from Products.Five.browser import BrowserView
+from Products.Five import BrowserView
+#from Products.Five.browser import BrowserView
+#from zope.publisher.browser import BrowserView
 from Products.CMFCore.interfaces import ISiteRoot
 from zope.interface import Interface
 from Acquisition import aq_inner, aq_parent
@@ -16,28 +18,43 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+try:
+    import json
+except ImportError:
+    # Python 2.5/Plone 3.3 use simplejson
+    import simplejson as json
+
+from Products.Five.browser import BrowserView
+
+
 class JSONExhibicionesList(BrowserView):
     """
         Called from main.js to populate the content listing view.
     """
+        
 
-
+        
+        
     def update(self,idColeccion="puig"):
+        print "loca"
         self.contexto= aq_inner(self.context)
-
+        
         if self.request.form.has_key("colecid"):
             idColeccion=self.request.form["colecid"]
 
         self.idColeccion=idColeccion
 
-    def render(self):
+    def __call__(self):
+        print "fs"
         listing = self.datos_contexto()
-        pretty = json.dumps(listing)
+        pretty  = json.dumps(listing)
         self.request.response.setHeader("Content-type", "application/json")
         self.request.response.setHeader('Access-Control-Allow-Origin', '*')
+        print pretty
         return pretty
 
     def datos_contexto(self):
+        self.update()
         catalogo=getToolByName(self.contexto,"portal_catalog")
         colecFolder=catalogo.searchResults(portal_type="arcas.coleccionesFolder")
 
@@ -65,6 +82,7 @@ class JSONExhibicionesList(BrowserView):
         for exhi in utilidad.dameExhibicionesR():
             data={'url':exhi.absolute_url()+'/images/baner','titulo':exhi.title,'remoteURL':exhi.absolute_url()}
             result.append(data)
+            
         return result
 
     def emptyData(self):

@@ -20,10 +20,10 @@ class IBiografia(form.Schema):
         description=_(u"Listar las obras/acciones/hitos más relevantes del artista"),
         required=True,
     )
-
-class View(DisplayForm):
+    
+from Products.Five import BrowserView
+class View(BrowserView):
     
     def dameColeccionNombre(self):
         padre=aq_parent(self.context)
-
         return padre.Title()
