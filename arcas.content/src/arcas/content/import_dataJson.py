@@ -30,14 +30,13 @@ def cargandoDatosEnPlone(jsonObj,carpeta):
     if "content" in jsonObj.keys():
         esContenedor=True;
 
-
     if jsonObj['id'] in [k for k,d in carpeta.items()]:
         try:
             print "borrando el objeto %s" %jsonObj['id']
             carpeta.manage_delObjects([jsonObj['id']])
         except:
             print "problema borrando el objeto %s" %jsonObj['id']
-            
+
         new_id      = carpeta.invokeFactory(jsonObj['portal_type'], jsonObj['id'])
         contenedor  = carpeta[new_id]
 
@@ -54,7 +53,6 @@ def cargandoDatosEnPlone(jsonObj,carpeta):
     if esContenedor:
         if len(jsonObj["content"])>0:
             cargandoDatosEnPlone(jsonObj["content"][0],contenedor)
-
     return
 
     if esContenedor:
