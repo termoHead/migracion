@@ -29,8 +29,9 @@ from plone.formwidget.autocomplete import AutocompleteFieldWidget
 from plone.formwidget.contenttree import MultiContentTreeFieldWidget
 from plone.formwidget.contenttree import PathSourceBinder
 from plone.formwidget.contenttree import ObjPathSourceBinder
-
-
+from z3c.relationfield.relation import RelationValue
+from zope.intid.interfaces import IIntIds
+from zope.component import getUtility
 
 class IRootFolder(model.Schema):
     """Una carpeta principal para documentos publicos
@@ -50,22 +51,26 @@ class IRootFolder(model.Schema):
 from Products.Five import BrowserView
 from plone.dexterity.browser.view import DefaultView
 class RootView(DefaultView):
+    
     def getExhiDestacado(self):
         ##recreaFolder= self.getContainer(folder.encode('utf8'))
         ##cuando busca documento hace referencia al campo "documento" que es el destacado del directorio
-        if self.context.exhiDestacada!=None:
-            if len(self.context.exhiDestacada)==0:
-                print "no hay exhibiciones asiganadas al portlet"
-                return None
-                
-            destacado     = self.context.exhiDestacada[0].to_object
-            colecTRelated = destacado.coleccionR[0].to_object                                
-            exhibUtils    = ExhibicionUtils(destacado)  
+
+        if isinstance(self.context.exhiDestacada,RelationValue):
+            intids = getUtility(IIntIds)
+            idTo=self.context.exhiDestacada.to_id
+            destacado=intids.getObject(idTo)
+            colecTRId=destacado.coleccionR.to_id
+            colecTRelated = intids.getObject(colecTRId)
+            exhibUtils = ExhibicionUtils(destacado)  
             
-            mcura=exhibUtils.dameCuradores()
-            minte=exhibUtils.dameCoordinadores()
+
             
-                          
+            #mcura=exhibUtils.dameCuradores()
+            #minte=exhibUtils.dameCoordinadores()
+            mcura=[]
+            minte=[]
+
             descrD=destacado.description
             
             if len(descrD)>250:
@@ -79,13 +84,40 @@ class RootView(DefaultView):
                 'curador': mcura,
                 'integrantes': minte
             }
-            
+
             if len(resp)>0:
                 return resp
-    
-        print "no hay exhibiciones asiganadas al portlet"
-        pass
+        else:
+            if self.context.exhiDestacada!=None:
+                if len(self.context.exhiDestacada)==0:
+                    print "no hay exhibiciones asiganadas al portlet"
+                    return None
 
+                destacado     = self.context.exhiDestacada[0].to_object
+                colecTRelated = destacado.coleccionR[0].to_object                                
+                exhibUtils    = ExhibicionUtils(destacado)  
+
+                mcura=exhibUtils.dameCuradores()
+                minte=exhibUtils.dameCoordinadores()
+
+                descrD=destacado.description
+
+                if len(descrD)>250:
+                    descrD=descrD[0:descrD[:250].rfind(" ")]+" ..."
+
+                resp={
+                    'titulo'   : destacado.title,
+                    'tituloColec': colecTRelated.title,
+                    'descri' : descrD,
+                    'exhiurl': destacado.absolute_url(),
+                    'curador': mcura,
+                    'integrantes': minte
+                }
+
+                if len(resp)>0:
+                    return resp
+
+        print "no hay exhibiciones asiganadas al portlet"
         return None
 
     def listExhiUrl(self):
@@ -102,7 +134,8 @@ class RootView(DefaultView):
     def getCategoriasColec(self):
         ##recupera las categorias y las colecciones de cada una
         resuList=[]
-        listado=ColeccionesPorCategoria()
+        listado=ColeccionesPorCategoria(self.context)
+
         
         txu=TextoUtils()
         for elem in listado(self.context):            
@@ -114,10 +147,12 @@ class RootView(DefaultView):
                 elC["extraFolderUrl"]       =extraFUrl
                 elC["extraFolderTitulo"]    =extraFT
                 elC["extraFolderFuenteUrl"] =extraFUrlF                
-                desc=elC["descri"]                 
+                desc=elC["descri"]
+
                 elC["descri"]=txu.cortaTexto(desc,87)
                 miCat["colecciones"].append(elC)
             resuList.append(miCat)
+
         
         if len(resuList)==0:
             print "no hay categorias encontradas"
@@ -129,6 +164,7 @@ class RootView(DefaultView):
     def getColecciones(self):
         ##recreaFolder= self.getContainer(folder.encode('utf8'))
         ##cuando busca documento hace referencia al campo "documento" que es el destacado del directorio
+
         
         catalog=getToolByName(self.context,"portal_catalog")
         
@@ -219,6 +255,7 @@ class RootView(DefaultView):
         strT="acerca_de_arcas"
         cexto=aq_inner(self.context)
         if not hasattr(cexto,strT):
+            return ""
             cexto.invokeFactory("Folder",strT)
             print "Se creo la carpeta Acerca de "
             cexto.acerca_de_arcas.title="Acerca de Arcas"

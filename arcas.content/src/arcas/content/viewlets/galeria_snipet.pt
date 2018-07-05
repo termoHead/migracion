@@ -12,6 +12,7 @@
             <div class="clr"></div>
         </div>
         <div class="photoAlbumRow">
+        
             <tal:repite tal:repeat="img imags">
                 <div class="photoAlbumEntry">
                     <a href="#" class="colorboxLink cboxElement"

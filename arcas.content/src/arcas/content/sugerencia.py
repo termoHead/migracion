@@ -76,26 +76,19 @@ class ISugerencia(form.Schema):
         constraint=isValidURL,
     )
 
-@grok.adapter(ISugerencia, name='urlRemoto')
+
 @indexer(ISugerencia)
 def remoteURLIndexer(context):
     return context.urlRemoto
 
-
-
-@grok.adapter(ISugerencia, name='urlRemoto')
-@indexer(ISugerencia)
-def remoteURLIndexer(context):
-    return context.urlRemoto
 
 from Acquisition import aq_inner
 from plone.directives.dexterity import DisplayForm
 from arcas.content.behaviors import IColecGroupName
 from Acquisition import aq_parent, aq_inner
+from Products.Five import BrowserView
 
-class View(DisplayForm):
-    grok.context(ISugerencia)
-    grok.require('zope2.View')
+class View(BrowserView):
 
     def dameIcon(self):
         """Devuelve un icono segun el tipo elegido"""

@@ -18,6 +18,10 @@ from arcas.content.eventos import PREFIJO_COOR_POTENCIAL
 _ = MessageFactory('plone')
 from arcas.content.behaviors import IColecGroupName
 
+from zope.interface import provider
+
+
+
 
 class GroupMembers(object):
     """Context source binder to provide a vocabulary of users in a given group.
@@ -32,7 +36,7 @@ class GroupMembers(object):
         acl_users = getToolByName(context, 'acl_users')
         group = acl_users.getGroupById(self.group_name)
         userssource = UsersSource(context)
-
+            
         terms = []
         roles = context.get_local_roles()
 
@@ -114,6 +118,40 @@ class GroupPotencialesExhi(object):
 
 
 
+@provider(IContextSourceBinder)
+def grupoPot(context):
+     def __call__(self, context):
+        acl_users = getToolByName(context, 'acl_users')
+        try:
+            miColeccion=context.coleccionR[0].to_object
+            idGAsign=IColecGroupName(miColeccion).groupName
+        except:
+            print "No se puedo asignar IColectGroupName"
+            return SimpleVocabulary([SimpleVocabulary.createTerm("", str(""), "")])
+        idGPot=idGAsign.replace("_g",PREFIJO_COOR_POTENCIAL)
+
+        grupoPot= acl_users.getGroupById(idGPot)
+        grupoAsignado=acl_users.getGroupById(idGAsign)
+
+        terms = []
+        listIds=[]
+        if grupoPot is not None:
+            for member_id in grupoPot.getMemberIds()+grupoAsignado.getMemberIds():
+                if member_id not in listIds:
+                    user = acl_users.getUserById(member_id)
+                    if user is not None:
+                        member_name = user.getProperty('fullname') or member_id
+                        listIds.append(member_id)
+                        terms.append(SimpleVocabulary.createTerm(member_id, str(member_id), member_name))
+
+            return SimpleVocabulary(terms)
+            
+        #devulve un registro vacio
+        return SimpleVocabulary([SimpleVocabulary.createTerm("", str(""), "")])
+
+
 GroupMembersVocabFactory = GroupMembers("listaCords")
+
 InvestigadoresVocabFactory = GroupPotenciales()
+
 CuradoresVocabFactory = GroupPotencialesExhi()

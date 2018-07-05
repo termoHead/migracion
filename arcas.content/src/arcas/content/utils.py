@@ -30,6 +30,10 @@ from zope.security import checkPermission
 from zc.relation.interfaces import ICatalog
 from Products.CMFPlone.utils import safe_unicode
 from plone.directives import form
+
+
+
+
 try:
     from arcas.content.coleccion import IColeccion
 except:
@@ -54,32 +58,38 @@ class TextoUtils(object):
 class ColeccionesPorCategoria(object):
     ###Devuleve una lista de Categorias, con sus respectivas colecciones"""
     def __init__(self,contexto):
+
         self.context=contexto
         
     def __call__(self,context):
-        return self._data(context)
+        return self._data()
     
-    def _data(self,contexto):
+    def _data(self):
         """devuleve los resultados de la base"""
-        catalogo = getToolByName(contexto, 'portal_catalog', None)
-        queryColecciones= dict(object_provides=IColeccion.__identifier__)
-        queryCategorias = dict(object_provides=ICategoria.__identifier__)
+        
+        
+        catalogo = getToolByName(self.context, 'portal_catalog', None)
+        queryColecciones= dict(portal_type="arcas.coleccion")
+        queryCategorias = dict(portal_type="arcas.content.categoria")
         colecciones=catalogo(queryColecciones)
         colLista=[]
         results=[]
+
         for brain in colecciones:
-            col=contexto.unrestrictedTraverse(brain.getPath())
-            try: 
-                pp=col.tipoColeccion
-            except:
-                pp="Autor"
-                
-            colLista.append({'titulo':brain.Title,'descri':brain.Description,'url':brain.getURL(),'tipoColeccion':pp,'id':col.id,"urlGS":col.GS_ID})
+            col=self.context.unrestrictedTraverse(brain.getPath())
+
             
-        
+            try: 
+                ppa=col.tipoColeccion
+            except:
+                ppa="Autor"
+                
+            colLista.append({'titulo':brain.Title,'descri':brain.Description,'url':brain.getURL(),'tipoColeccion':ppa,'id':col.id,"urlGS":col.GS_ID})
+
         catQes=catalogo(queryCategorias)
         for elem in catQes:
-            cat=contexto.unrestrictedTraverse(elem.getPath())
+
+            cat=self.context.unrestrictedTraverse(elem.getPath())
             tmpR=filter(lambda col: col['tipoColeccion'] == self.elimina_tildes(elem.Title.decode('utf8')), colLista)
             if(len(tmpR)>0):                
                 try:
@@ -182,23 +192,35 @@ GroupMembersVocabFactory = GroupMembers("Staff")
 
 
 
-
+from z3c.relationfield.relation import RelationValue
+from zope.intid.interfaces import IIntIds
+from zope.component import getUtility
 class ExhibicionUtils(object):
     """utilidades para las exhibiciones"""
 
-    def __init__(self,colec):        
+    def __init__(self,colec):
         self.exhibicion=colec
-        self.colecPosta=colec.coleccionR[0].to_object
+        if isinstance(colec.coleccionR,RelationValue):
+            #self.colecPosta=colec.coleccionR[0].to_object
+            idTo=colec.coleccionR.to_id
+            intids = getUtility(IIntIds)
+            self.colecPosta=intids.getObject(idTo)
+        else:
+            self.colecPosta=colec.coleccionR[0].to_object
+            
         self.mt = getToolByName(colec, 'portal_membership')
         
+    
+    def redefineExhiFuente(self,objeto):
+        """Modifia el objeto sobre el que se buscan los datos"""
+        self.exhibicion=objeto
     
     def dameCoordinadores(self):
         """Devuelve los coordinadores de la colección"""
         listResult=[]
         idsCoords=self.buscameEn(self.colecPosta,"coordinador")
-
+        
         for idm in idsCoords:
-            
             listResult.append({
                                 'type' : 'user',
                                 'id'   : idm["id"],
@@ -221,14 +243,15 @@ class ExhibicionUtils(object):
     def buscameEn(self, obj, campo):
         listResult=[]
         idsCuras=getattr(obj,campo)
-        for idm in idsCuras:
-            chabon = self.mt.getMemberById(idm)
-            listResult.append({'type' : 'user',
-                             'id'   : chabon.id,
-                             'nombre': chabon.getProperty('fullname', None) or chabon.id,
-                             'email': chabon.getProperty('email'),
-                             'img'  : self.mt.getPersonalPortrait(id=chabon.id),
-                             })
+        if idsCuras!=None:
+            for idm in idsCuras:
+                chabon = self.mt.getMemberById(idm)
+                listResult.append({'type' : 'user',
+                                    'id'   : chabon.id,
+                                    'nombre': chabon.getProperty('fullname', None) or chabon.id,
+                                    'email': chabon.getProperty('email'),
+                                    'img'  : self.mt.getPersonalPortrait(id=chabon.id),
+                                    })
         return listResult
 
 class ColeccionUtils(object):

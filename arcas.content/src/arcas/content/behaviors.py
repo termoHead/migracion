@@ -61,7 +61,7 @@ class IColecGroupName(form.Schema):
 @provider(IFormFieldProvider)
 class IColDerSeccion(form.Schema):
     """Campos para gestionar una sección"""
-    form.fieldset('colDerecha', label=u"Col. derecha Sec1",
+    form.fieldset('columnaDer', label=u"Col. derecha Sec1",
                   fields=['tipoSecc1','titulo1', 'textoSeccion1', 'ria1','picture1']
                   )
     form.fieldset('colDerecha', label=u"Col. derecha Sec2",

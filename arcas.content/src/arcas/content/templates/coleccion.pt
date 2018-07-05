@@ -74,11 +74,10 @@
                 <div class="descriColect">
                     <h4>Acerca de esta Coleccion</h4>
                     <p tal:content="context/description">Descripción de la colección</p>
-                    <div tal:condition="cuerpoText" class="extraColeccion" style="display:none" tal:content="structure  cuerpoText">Descripción de la colección</div>
+                    <div tal:condition="cuerpoText" class="extraColeccion" style="display:none" tal:content="structure cuerpoText">Descripción de la colección</div>
                     <div class="pie">
                         <a href="#" id="masColecBoton" onclick="togTexto(this);return false" tal:attributes="title context/title">(+) expandir texto</a>
                     </div>
-
                 </div>
                 <div class="boxCoord">
                     <tal:coordinadores tal:define="coors view/getCoordinadores | nothing"
@@ -171,7 +170,8 @@
             </div>
             <div class="columnaDos">            
                 <div class="colDerSec1">
-                    <!--Seccion 1 -->                                   
+                    <!--Seccion 1 -->         
+                    !!!!!!!!!!!!!!
                     <div tal:replace="structure view/getSecc1" />
                     <!--fin Seccion 1 -->
                 </div>

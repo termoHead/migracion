@@ -1,10 +1,11 @@
 <div class="componente-box" i18n:domain="arcas.content">
+<tal:conte tal:content="view/dameSeccionActual"></tal:conte>
     <div class="wrapComp" tal:define="miSec view/dameSeccionActual;
-                       titulo python: miSec==1 and view.context.titulo1 or view.context.titulo2;                       
+                       titulo python:miSec==1 and view.context.titulo1 or view.context.titulo2;                       
                        strImg python:miSec==1 and view.context.textoSeccion1 or view.context.textoSeccion2"> 
-<div class="boxTexto">                       
-        <h4 tal:content="titulo">Un texto, verdad</h4>
-        <div class="compDescri" tal:content="structure strImg">Un texto no muy largo</div>        
-</div>
-</div>
+        <div class="boxTexto">                       
+                <h4 tal:content="titulo">Un texto, verdad</h4>
+                <div class="compDescri" tal:content="structure strImg/output">Un texto no muy largo</div>        
+        </div>
+    </div>
 </div>

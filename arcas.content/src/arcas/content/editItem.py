@@ -7,7 +7,7 @@ from arcas.content.rootFolder import IRootFolder
 from Products.CMFPlone.utils import safe_unicode
 
 #from five import grok
-#from plone.directives import form
+from plone.directives import form
 
 from zope import schema
 from z3c.form import button
@@ -87,11 +87,11 @@ class EditItem(form.SchemaForm):
     xmlFileResto ='/import/co.1/se.1/su.1/ar.1/it.1/'
     xmlFileName='metadata.xml'
     
-    grok.name('editItem')
-    grok.require('zope2.View')
+    #grok.name('editItem')
+    #grok.require('zope2.View')
     #grok.require('cmf.ListFolderContents')
     #grok.require('arcas.addExhibicion')
-    grok.context(IRootFolder)
+    #grok.context(IRootFolder)
     schema = IEditItem
     
     ignoreContext = True    

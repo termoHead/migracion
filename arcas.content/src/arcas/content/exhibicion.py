@@ -26,6 +26,7 @@ from Products.CMFCore import permissions
 from Acquisition import aq_inner
 from plone.directives.dexterity import DisplayForm,EditForm
 from plone.autoform import directives
+from arcas.content.vocabularios import grupoPot
 
 try:
     from arcas.content.coleccion import IColeccion
@@ -69,21 +70,21 @@ class IExhibicion(form.Schema):
 
     curador=schema.List(
         title=_(u"Curadores"),
-        value_type=schema.Choice(source="arcas.ExhibicionMembersVocab",),
+        value_type=schema.Choice(source=grupoPot),
         required=False
     )
     
     integrantes=schema.List(
         title=_(u"Integrantes"),
         description=u"Listado de personas que colaboran con esta exhibición",
-        value_type=schema.Choice(source="arcas.ExhibicionMembersVocab"),
+        value_type=schema.Choice(source=grupoPot),
         required=False
     )
     directives.widget(coleccionR=AutocompleteFieldWidget)
     coleccionR = RelationChoice(
         title=u"Colección Relacionada",
         description=u"Colección a la que pertenece esta exhibicón",
-        source=ObjPathSourceBinder(object_provides=IColeccion.__identifier__),
+        source=ObjPathSourceBinder(portal_type="arcas.coleccion"),
         required=False,
     )
 
@@ -107,8 +108,6 @@ class View(BrowserView):
         return self.context.id
     
     def dameObjectoColeccion(self):
-        
-
         try:
             miColec=self.context.coleccionR[0].to_object
             if IColeccion.providedBy(miColec):
@@ -123,7 +122,7 @@ class View(BrowserView):
         """Devuelve los usuarios del grupo coor"""
         groups_tool = getToolByName(self.context, 'portal_groups')
         fUser=[]
-        colecR=self.dameObjectoColeccion()        
+        colecR=self.dameObjectoColeccion()
         if colecR:
             ppa=IColecGroupName(colecR)
             group_id = ppa.groupName.replace("_g",PREFIJO_COOR_GROUP)
@@ -135,7 +134,6 @@ class View(BrowserView):
                     fUser.append(usuario.getProperty('fullname'))
                 else:
                     fUser.append(usuario.getProperty('id'))
-                    
             return fUser
         else:
             return None
@@ -214,13 +212,17 @@ class View(BrowserView):
     
     def dameSaftyDescri(self):
         """devuelve la descripcion de la exhibicion recortada"""
-        str=self.context.cuerpo.output[:900]
-        cierre=str.rfind("</p>")
-        apertura=str.rfind("<p>")
-        if cierre<apertura:
-            str=str+" ...</p>"
-        return str
-        
+        if self.context.cuerpo != None:
+            str=self.context.cuerpo.output[:900]
+            cierre=str.rfind("</p>")
+            apertura=str.rfind("<p>")
+            if cierre<apertura:
+                str=str+" ...</p>"
+            return str
+        else:
+            return ''
+            
+            
     def dameDatosImgFull(self):
         """
             devuelve un diccionario con los datos de la primera hoja

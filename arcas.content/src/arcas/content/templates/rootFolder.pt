@@ -9,9 +9,11 @@
 <metal:content-core fill-slot="main">
     <metal:content-core define-macro="main">
 	 <!--script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script-->
+
         <div class="boxTop rootFolder">
             <div class="exhiV" tal:define="artDestacado view/getExhiDestacado | nothing"
                                tal:condition="artDestacado">
+                               
                 <div  id="exhibicionHome" class="exhibicio_componenet"
                       tal:attributes="style string:background:url(${artDestacado/exhiurl}/@@images/bgCabezalHome) no-repeat">
 
@@ -53,7 +55,9 @@
 
             </div>
         </div>
+
         <tal:def tal:define="colecciones view/getCategoriasColec | nothing">
+
             <div class="boxColec">
                 <div id="coleccionesHome">
                     <h3><a href="#" tal:attributes="href string:${view/listColeccUrl}" title="Listado completo de colecciones">COLECCIONES EN ARCAS</a></h3>

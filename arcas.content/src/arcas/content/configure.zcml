@@ -85,8 +85,15 @@
       class="arcas.content.coleccion.ColeccionView"
       template="templates/coleccion.pt"
       permission="zope2.View"
-       
       />
+    
+    <browser:page
+      name="view"
+      for="*"
+      template="templates/sugerencia.pt"
+      class="arcas.content.sugerencia.View"
+      permission="zope2.View"
+    />
     
     <browser:page
         for=".coleccion.IColeccion"
@@ -111,7 +118,12 @@
       template="templates/enlacegs.pt"
       permission="zope2.View"
       />      
-      
+    <browser:page
+      name="AddForm"
+      for="arcas.content.enlacegs.IEnlacegs"
+      class="arcas.content.enlacegs.AddForm"
+      permission="zope2.View"
+      />      
       
     <browser:page
       name="view"
@@ -130,7 +142,14 @@
       permission="zope2.View"
       />
      
-        
+
+    <browser:page
+        for="Products.CMFCore.interfaces.IFolderish"
+        name="import_json"
+        class=".import_dataJson.ImportJsonView"
+        permission="cmf.ModifyPortalContent"
+        template = "templates/importJson.pt"
+/>
       
    <utility
             component=".vocabularios.GroupMembersVocabFactory"
@@ -165,7 +184,7 @@
         provides=".colDerViewlets.ISeccionDos"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
-/>
+    />
     
     
     
@@ -192,6 +211,8 @@
                 zope.lifecycleevent.interfaces.IObjectRemovedEvent"
             handler=".eventos.onDelColeccion"
         />
+        
+        
         <browser:page
           for="*"
           name="json_exhibiciones"
@@ -200,7 +221,47 @@
           class=".jsonView_exhibaners.JSONExhibicionesList"
           />
      
-        <!--browser:page
+        <browser:page
+          for="*"
+          name="json_import"
+          permission="zope2.Public"
+          allowed_attributes="render"
+          class=".import_dataJson.JSONImport"
+          />
+     
+        
+        <plone:behavior
+        title="Columna Derecha"
+        description="Agrega campos para que se pueda customizar la columna derecha de un documento"
+        provides=".behaviors.IColDerSeccion"
+        for="arcas.content.coleccion.IColeccion"/>
+        
+        
+        <plone:behavior
+            title="GroupColeccion"
+            description="Agrega un campo nombre de grupo."
+            provides=".behaviors.IColecGroupName"
+            factory =".behaviors.ColecGroupName"/>
+        
+ 
+        
+        <browser:page
+        name="editItem"
+        for="arcas.content.rootFolder.IRootFolder"
+        class="arcas.content.editItem.EditItem"
+        permission="zope2.View"
+        />
+
+
+    
+    <!--browser:page
+            name="redirect_view"
+            for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+            class=".browser.RedirectionView"
+            permission="zope2.View"
+    /-->
+        
+    <!--browser:page
       name="view"
       for="arcas.content.coleccion.IColeccion"
       class="arcas.content.coleccion.Coleccion"
@@ -208,68 +269,9 @@
       permission="zope2.View"
        
       />
-     
-     
-     
 
-     
-    <browser:viewletManager
-        name="arcas.coleccion.seccion1"
-        provides=".colDerViewlets.ISeccionUno"
-        permission="zope2.View"
-        class="plone.app.viewletmanager.manager.OrderedViewletManager"
-    />
-    
-    <browser:viewletManager
-        name="arcas.coleccion.seccion2"
-        provides=".colDerViewlets.ISeccionDos"
-        permission="zope2.View"
-        class="plone.app.viewletmanager.manager.OrderedViewletManager"/>
-    
-    
-    
-        <plone:behavior
-        title="Columna Derecha"
-        description="Agrega campos para que se pueda customizar la columna derecha de un documento"
-        provides=".behaviors.IColDerSeccion"
-        for="arcas.content.coleccion.IColeccion"/>
-        <plone:behavior
-            title="GroupColeccion"
-            description="Agrega un campo nombre de grupo."
-            provides=".behaviors.IColecGroupName"
-            factory =".behaviors.ColecGroupName"/>
-        
-    <browser:page
-      name="editItem"
-      for="arcas.content.rootFolder.IRootFolder"
-      class="arcas.content.editItem.EditItem"
-      permission="zope2.View"
-      /> 
-    
+  
 
-          
-
-
-  <browser:page
-      name="view"
-      for="arcas.content.exhibicionesFolder.IExhibicionesFolder"
-      class="arcas.content.exhibicionesFolder.ExhibicionesFolder"
-      template="templates/exhibicionesFolder.pt"
-      permission="zope2.View"
-      />
-  <browser:page
-      name="view"
-      for="arcas.content.enlacegs.IEnlacegs"
-      class="arcas.content.enlacegs.IEnlacegs"
-      template="templates/enlacegs.pt"
-      permission="zope2.View"
-      />      
-    <browser:page
-      name="AddForm"
-      for="arcas.content.enlacegs.IEnlacegs"
-      class="arcas.content.enlacegs.AddForm"
-      permission="zope2.View"
-      />      
  
      <browser:page
         for="*"

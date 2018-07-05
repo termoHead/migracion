@@ -42,14 +42,13 @@ class ExhibicionesFolderView(BrowserView):
         """Devuelve una Lista con dicccionario de cada exhibicion"""
         contexto = self.context.aq_inner
         catalogo=getToolByName(contexto,"portal_catalog")
-        result  =catalogo(object_provides=IExhibicion.__identifier__)
+        result  =catalogo(portal_type="arcas.exhibicion")
         listados=[]
-
         
         for exhi in result:
 
             miOb = contexto.unrestrictedTraverse(exhi.getPath())
-            if miOb.coleccionR!=None:
+            if miOb.getObject().coleccionR!=None:
                 miCol= miOb.coleccionR.to_object
                 ppa=ColeccionUtils(miCol)
 

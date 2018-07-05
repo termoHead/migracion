@@ -14,9 +14,9 @@
             
                         <div class="markExhibicion" tal:define="curadorObj view/dameCurador|nothing;
                                 colabs view/dameColaboradores|nothing;								
-                                                                coord view/dameCoordinador|nothing;
+                                coord view/dameCoordinador|nothing;
                                 listaFotos  view/listadoDeImagenesGS3|nothing;
-                                                                datosFull view/dameDatosImgFull | nothing;
+                                datosFull view/dameDatosImgFull | nothing;
                                 recursos view/dameEnlaces|nothing;
                                 idExhi view/dameIdExhi;
                                 puedeEditar view/puedeEditar"
@@ -53,22 +53,20 @@
                                 
                             </div>
                         </div>
-                                                <tal:coor tal:condition="python:len(colabs)>0">
-                                                        <div class="responsables">
-                                                        <span  class="labelTitulo">
+                        <!--tal:coor tal:condition="python:len(colabs)>0">
+                                <div class="responsables">
+                                <span  class="labelTitulo">
                                 <tal:span tal:condition="python:len(colabs)>1">Colaboradores en</tal:span>
                                 <tal:span tal:condition="python:len(colabs)<2">Colaborador de</tal:span>
-                                ésta exhibición
-                                                        </span>
-                            <ul>
-                                                        <li tal:repeat="colabora colabs">
-                                                                <span  tal:content="python:colabora['nombre']">Ernesto Trambonati</span>
-                                                                <span tal:condition="not: repeat/colabora/end">,</span>
-                                                        </li>
-                                                        </ul>
-                            </div>
-                                                        
-                                                </tal:coor>
+                                ésta exhibición</span>
+                                <ul>
+                                <li tal:repeat="colabora colabs">
+                                        <span  tal:content="python:colabora['nombre']">Ernesto Trambonati</span>
+                                        <span tal:condition="not: repeat/colabora/end">,</span>
+                                </li>
+                                </ul>
+                            </div>                                                        
+                        </tal:coor -->
                                 </div>
                 <div class="clr"></div>
             </div>

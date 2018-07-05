@@ -170,7 +170,6 @@ class ColeccionView(BrowserView):
         colection_path = '/'.join(aq_inner(self.context).getPhysicalPath())
         idRec=excludList[0]
         if hasattr(self.context,idRec):
-
             recomFolder=aq_inner(self.context[idRec])
             desta_path = '/'.join(recomFolder.getPhysicalPath())
             recomContent=catalog.searchResults(path={'query':desta_path , 'depth': 1})
@@ -194,12 +193,7 @@ class ColeccionView(BrowserView):
                     obj["content"]  =self.dameContenido(elemObj)
                     obj["url"]  =elem.getURL()
                     listFold.append(obj)
-
-
         return listFold
-
-
-
 
     def dameContenido(self,folder):
         """Devuelve una lista con los objetos del contenedor"""
