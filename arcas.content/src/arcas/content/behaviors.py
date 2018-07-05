@@ -58,7 +58,7 @@ class IColecGroupName(form.Schema):
 
 
 
-@provider(IFormFieldProvider)
+
 class IColDerSeccion(form.Schema):
     """Campos para gestionar una sección"""
     form.fieldset('columnaDer', label=u"Col. derecha Sec1",
@@ -125,7 +125,7 @@ class IColDerSeccion(form.Schema):
 #    return data.groupName
 
 alsoProvides(IColecGroupName, IFormFieldProvider)
-
+alsoProvides(IColDerSeccion, IFormFieldProvider)
 class ColecGroupName(object):
     """Store tags in the Dublin Core metadata Subject field. This makes
         tags easy to search for."""

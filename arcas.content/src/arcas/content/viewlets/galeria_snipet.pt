@@ -20,7 +20,7 @@
                         tal:attributes="href  string:${img/brain/getURL};
                         title img/brain/Title;">
                         <img src="" alt="" tal:attributes="
-                        src string:${img/brain/getURL}/image_thumb;
+                        src string:${img/brain/getURL}/@@images/image/thumb;
                         alt img/brain/Title;
                         width img/width;" />
                     </a>

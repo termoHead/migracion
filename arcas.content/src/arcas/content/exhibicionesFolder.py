@@ -48,7 +48,7 @@ class ExhibicionesFolderView(BrowserView):
         for exhi in result:
 
             miOb = contexto.unrestrictedTraverse(exhi.getPath())
-            if miOb.getObject().coleccionR!=None:
+            if miOb.coleccionR!=None:
                 miCol= miOb.coleccionR.to_object
                 ppa=ColeccionUtils(miCol)
 

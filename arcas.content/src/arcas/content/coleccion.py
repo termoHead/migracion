@@ -46,11 +46,7 @@ class IColeccion(form.Schema):
         u"Ilustraciones",
         fields=['imagenCabecera','textoAltCabecera','imagenHome','imagenLista'],
     )
-    form.fieldset(
-        'columnaDer',
-        u"Columna derecha",
-        fields=[],
-    )
+
     
     tipoColeccion = schema.Choice(
             title=u"Categoría",
@@ -236,15 +232,29 @@ class ColeccionView(BrowserView):
         tmpX=[]
 
         if hasattr(context,context.id+"_gale"):
-            galeFold=context[context.id+"_gale"]
+            galeFold=getattr(context,context.id+"_gale")
             galePath="/".join(galeFold.getPhysicalPath())
-            result=catalogo(path=galePath,portal_type="Image",sort_on='getObjPositionInParent')            
+            result=catalogo(path=galePath,portal_type="Image",sort_on='getObjPositionInParent')
+             
             for re in result:
+                if re.Title == "Un Puig":
+                    import pdb
+                    pdb.set_trace()
                 foto=context.unrestrictedTraverse(re.getPath())
-                iniH=foto.height
+
                 altoSugerido=80
+                if hasattr(foto,"height"):
+                    iniH=foto.height
+                else:
+                    iniH=foto.image._height
+
+                if hasattr(foto,"height"):
+                    fw=foto.width
+                else:
+                    fw=foto.image._width
+                    
                 relH=((altoSugerido*100)/iniH)
-                widthH=(foto.width*relH)/100
+                widthH=(fw*relH)/100
                 tmpX.append({"width":widthH,"brain":re})
         else:
             return None
